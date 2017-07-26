@@ -1,0 +1,176 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+   
+     <h:head>
+        <title>Infraestructura</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
+        <script src="bootstrap/css/bootstrap.min.js"></script>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="./../Plantilla/template.xhtml">
+                
+            <ui:define name="cuerpo" >
+                <h:form  >
+                <p:layout   id="ESPACIOS" style="height:450px;margin:20px;">
+<!--            --><p:layoutUnit size="580" position="west" style=" height:200px">
+                        
+                        <p:panel header="Registro de Espacios"  style="height:382px;margin: 20px;" >
+                        <p:scrollPanel style="width:500px;height:338px">
+                            <h:panelGrid columns="2" cellpadding="10" >
+                                <p:outputLabel for="tipoEspacio" value="Tipo de espacio:" />
+                                <p:selectOneMenu requiredMessage="Seleccione un espacio" id="tipoEspacio" 
+                                                  value="#{espacioBean.tipoEspacio}" style="width:225px" >
+                                    
+                                    <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>                
+                                    <f:selectItem itemLabel="Aula" itemValue="1" />
+                                    <f:selectItem itemLabel="Oficina" itemValue="2"  />
+                                    <f:selectItem itemLabel="Laboratorio" itemValue="3"  />
+                                     <f:selectItem itemLabel="Administrativa" itemValue="4"  />
+                                    <f:selectItem itemLabel="Otros" itemValue="5"  />
+                                    <f:ajax render="@form" />
+                                </p:selectOneMenu>
+
+                                <h:outputLabel for="nombre" value="Nombre:" />
+                                <p:inputText id="nombre" value="#{espacioBean.nombre}" required="true" />
+                                
+                                <h:outputLabel for="internet" value="Dispone de Internet:" />
+                                <p:selectOneRadio id="internet" value="#{espacioBean.internet}">
+                                    <f:selectItem itemLabel="Si" itemValue="Si" />
+                                    <f:selectItem itemLabel="No" itemValue="No" />
+                                </p:selectOneRadio>
+                                
+                                <h:outputLabel for="ilumicacion" value="Dispone de Iluminacion:" />
+                                <p:selectOneRadio id="iluminacion" value="#{espacioBean.iluminacion}">
+                                    <f:selectItem itemLabel="Si" itemValue="Si" />
+                                    <f:selectItem itemLabel="No" itemValue="No" />
+                                </p:selectOneRadio>
+                                
+                                
+                                </h:panelGrid>
+                           <!-- SI SELECCIONA AULA O LABORATORIO -->
+                                <h:panelGrid columns="2" cellpadding="15" rendered="#{espacioBean.tipoEspacio == '1' or espacioBean.tipoEspacio == '3'}">
+                                    <p:separator />
+                                    <p:separator />
+
+                                    <p:outputLabel for="ubicacion"  value="Ubicacion:"  />
+                                    <p:inputText id="ubicacion" value="#{espacioBean.ubicacion}" required="true"  />
+                                    <h:outputLabel for="area" value="Área (mts2):" />
+                                    <p:inputText id="area" value="#{espacioBean.area}" required="true" />
+                                    <p:separator />
+                                    <p:separator />
+                                </h:panelGrid>
+                            <!-- SI SELECCIONA OFICINA O ADMINISTRATIVA -->
+                                <h:panelGrid columns="2" cellpadding="15" rendered="#{espacioBean.tipoEspacio == '2' or espacioBean.tipoEspacio == '4'}">
+                                    <p:separator />
+                                    <p:separator />
+                                    <h:outputLabel for="numEscritorios"  value="Número de escritorios:"   />
+                                    <p:inputText  id="numEscritorios" value="#{espacioBean.numEscritorios}"  required="true"  />
+                                    <h:outputLabel for="capaciad" value="Capacidad en numero de alumnos:"  />
+                                    <p:inputText id="capaciad" value="#{espacioBean.numAlumnos}" required="true"  />
+                                    <p:separator />
+                                    <p:separator />
+                                </h:panelGrid>
+                            <!-- SI SELECCIONA OTROS -->
+                                <h:panelGrid columns="2" cellpadding="15" rendered="#{espacioBean.tipoEspacio == '5'}">
+                                    <p:separator />
+                                    <p:separator />
+                                    <h:outputLabel for="otroEspacio"  value="Otro espacio (Tipo):"   />
+                                    <p:inputText  id="otroEspacio" value="#{espacioBean.otroEspacio}"  required="true"  />
+                                    
+                                    <p:separator />
+                                    <p:separator />
+                                </h:panelGrid>
+                            
+                                <h:panelGrid columns="1" cellpadding="15" rendered="#{espacioBean.tipoEspacio == '1' or espacioBean.tipoEspacio == '2'or
+                                            espacioBean.tipoEspacio == '3' or espacioBean.tipoEspacio == '4'or espacioBean.tipoEspacio == '5'}">
+                                    
+                                    <p:commandButton update="ESPACIOS"   value="Resgistrar" actionListener="#{espacioBean.registrarEspacio}"/>
+                                     
+                                </h:panelGrid>
+                            
+                            
+                        </p:scrollPanel>
+                        </p:panel>
+                    
+
+                    </p:layoutUnit>
+
+<!--            --> <p:layoutUnit position="center"  style="margin-right:20px ">
+                        <p:panel style="margin: 20px; background-color:#ece9d8;" >
+                            <br></br>
+                            <f:facet name="header">
+                                Espacios Registrados
+                            </f:facet>  
+                            <p:commandButton process="tablaEspacios" update="espacioDetalle" icon="ui-icon-search" value="View" oncomplete="PF('espacioDialogo').show()" />
+                            <p:dataTable var="espacio" value="#{espacioBean.espacios}" 
+                                         selectionMode="single" selection="#{espacioBean.espacioSeleccionado}"
+                                         rowKey="#{espacio.nombreEspacio}" id="tablaEspacios"  >
+
+                                
+                                <p:column headerText="Nombre">
+                                    <h:outputText value="#{espacio.nombreEspacio}" />
+                                </p:column>
+                                
+                                <p:column headerText="Tipo de espacio">
+                                    <h:outputText value="#{espacio.tipo.nombre}" />
+                                </p:column>
+                                
+                                
+                                
+                            </p:dataTable> 
+
+                            </p:panel>
+                        <p:dialog  style="height:450px;margin:10px;border: 10px" header="Informacion del espacio" widgetVar="espacioDialogo" showEffect="explode" hideEffect="bounce" resizable="false">
+                            <p:outputPanel id="espacioDetalle" >
+                                <p:panelGrid  columns="2" rendered="#{not empty espacioBean.espacioSeleccionado}" columnClasses="label,value">
+                                    
+                                    <h:outputText value="Tipo" />
+                                    <h:outputText value="#{espacioBean.espacioSeleccionado.tipo.nombre}" />
+
+                                    <h:outputText value="Nombre " />
+                                    <h:outputText value="#{espacioBean.espacioSeleccionado.nombreEspacio}" />
+                                    
+                                    <h:outputText value="Dispone de iluminacion " />
+                                    <h:outputText value="#{espacioBean.espacioSeleccionado.iluminacion }" />
+                                    
+                                    <h:outputText value="Dispone de internet " />
+                                    <h:outputText value="#{espacioBean.espacioSeleccionado.internet }" />
+
+                                </p:panelGrid>
+                                <p:tabView>
+ <!-- HORARIOS-->
+                                    
+                                        <p:tab title="Normativa">
+                                            
+                                        </p:tab>
+                                       
+ <!-- DOCENTES-->                       <p:tab title="Materias">
+                                           
+                                        </p:tab>
+                                       
+                                    </p:tabView>
+                            </p:outputPanel>
+                        </p:dialog>
+                    </p:layoutUnit>
+                </p:layout>
+                </h:form>    
+                
+                
+            </ui:define>
+
+        </ui:composition>
+        
+       
+
+    </h:body>
+    
+</html>
