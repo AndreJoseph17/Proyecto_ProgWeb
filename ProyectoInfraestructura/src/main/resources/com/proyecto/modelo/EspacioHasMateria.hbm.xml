@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 26/07/2017 14:26:50 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.proyecto.modelo.EspacioHasMateria" table="espacio_has_materia" catalog="proyecto" optimistic-lock="version">
+        <composite-id name="id" class="com.proyecto.modelo.EspacioHasMateriaId">
+            <key-property name="espacioIdEspacio" type="int">
+                <column name="Espacio_idEspacio" />
+            </key-property>
+            <key-property name="materiaIdMateria" type="int">
+                <column name="materia_idMateria" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="espacio" class="com.proyecto.modelo.Espacio" update="false" insert="false" fetch="select">
+            <column name="Espacio_idEspacio" not-null="true" />
+        </many-to-one>
+        <many-to-one name="materia" class="com.proyecto.modelo.Materia" update="false" insert="false" fetch="select">
+            <column name="materia_idMateria" not-null="true" />
+        </many-to-one>
+        <property name="periodo" type="string">
+            <column name="periodo" length="45" />
+        </property>
+    </class>
+</hibernate-mapping>

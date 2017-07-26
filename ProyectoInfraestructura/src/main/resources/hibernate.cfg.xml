@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.enable_lazy_load_no_trans">true</property>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/proyecto</property>
+    <property name="hibernate.connection.username">root</property>
+    <property name="hibernate.connection.password">12345</property>
+    <property name="hibernate.show_sql">true</property>
+    <property name="hibernate.format_sql">true</property>
+    <property name="hibernate.current_session_context_class">thread</property>
+    <mapping resource="com/proyecto/modelo/Estudiante.hbm.xml"/>
+    <mapping resource="com/proyecto/modelo/Matricula.hbm.xml"/>
+    <mapping resource="com/proyecto/modelo/MatriculaHasMateria.hbm.xml"/>
+    <mapping resource="com/proyecto/modelo/EspacioHasMateria.hbm.xml"/>
+    <mapping resource="com/proyecto/modelo/EquipoInformatico.hbm.xml"/>
+    <mapping resource="com/proyecto/modelo/MateriaHasDocente.hbm.xml"/>
+    <mapping resource="com/proyecto/modelo/Horario.hbm.xml"/>
+    <mapping resource="com/proyecto/modelo/Normativa.hbm.xml"/>
+    <mapping resource="com/proyecto/modelo/Espacio.hbm.xml"/>
+    <mapping resource="com/proyecto/modelo/MateriaHasHorario.hbm.xml"/>
+    <mapping resource="com/proyecto/modelo/Docente.hbm.xml"/>
+    <mapping resource="com/proyecto/modelo/Tipo.hbm.xml"/>
+    <mapping resource="com/proyecto/modelo/Dia.hbm.xml"/>
+    <mapping resource="com/proyecto/modelo/Formula.hbm.xml"/>
+    <mapping resource="com/proyecto/modelo/Materia.hbm.xml"/>
+  </session-factory>
+</hibernate-configuration>

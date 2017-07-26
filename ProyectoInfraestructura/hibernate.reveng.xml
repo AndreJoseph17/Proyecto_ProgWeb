@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
+<hibernate-reverse-engineering>
+  <schema-selection match-catalog="proyecto"/>
+  <table-filter match-name="dia"/>
+  <table-filter match-name="materia_has_docente"/>
+  <table-filter match-name="normativa"/>
+  <table-filter match-name="matricula_has_materia"/>
+  <table-filter match-name="horario"/>
+  <table-filter match-name="materia_has_horario"/>
+  <table-filter match-name="equipo_informatico"/>
+  <table-filter match-name="estudiante"/>
+  <table-filter match-name="espacio_has_materia"/>
+  <table-filter match-name="tipo"/>
+  <table-filter match-name="materia"/>
+  <table-filter match-name="matricula"/>
+  <table-filter match-name="docente"/>
+  <table-filter match-name="formula"/>
+  <table-filter match-name="espacio"/>
+</hibernate-reverse-engineering>

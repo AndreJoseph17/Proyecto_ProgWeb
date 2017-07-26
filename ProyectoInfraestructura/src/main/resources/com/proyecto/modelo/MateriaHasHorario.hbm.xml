@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 26/07/2017 14:26:50 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.proyecto.modelo.MateriaHasHorario" table="materia_has_horario" catalog="proyecto" optimistic-lock="version">
+        <composite-id name="id" class="com.proyecto.modelo.MateriaHasHorarioId">
+            <key-property name="materiaIdMateria" type="int">
+                <column name="materia_idMateria" />
+            </key-property>
+            <key-property name="horarioIdHorario" type="int">
+                <column name="horario_idHorario" />
+            </key-property>
+            <key-property name="diaIdDias" type="int">
+                <column name="dia_idDias" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="dia" class="com.proyecto.modelo.Dia" update="false" insert="false" fetch="select">
+            <column name="dia_idDias" not-null="true" />
+        </many-to-one>
+        <many-to-one name="horario" class="com.proyecto.modelo.Horario" update="false" insert="false" fetch="select">
+            <column name="horario_idHorario" not-null="true" />
+        </many-to-one>
+        <many-to-one name="materia" class="com.proyecto.modelo.Materia" update="false" insert="false" fetch="select">
+            <column name="materia_idMateria" not-null="true" />
+        </many-to-one>
+        <property name="periodo" type="string">
+            <column name="periodo" length="45" />
+        </property>
+    </class>
+</hibernate-mapping>

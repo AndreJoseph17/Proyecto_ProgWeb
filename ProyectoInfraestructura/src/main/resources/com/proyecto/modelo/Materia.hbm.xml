@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 26/07/2017 14:26:50 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.proyecto.modelo.Materia" table="materia" catalog="proyecto" optimistic-lock="version">
+        <id name="idMateria" type="java.lang.Integer">
+            <column name="idMateria" />
+            <generator class="identity" />
+        </id>
+        <property name="nombre" type="string">
+            <column name="nombre" length="45" />
+        </property>
+        <property name="descripcion" type="string">
+            <column name="descripcion" length="45" />
+        </property>
+        <set name="espacioHasMaterias" table="espacio_has_materia" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="materia_idMateria" not-null="true" />
+            </key>
+            <one-to-many class="com.proyecto.modelo.EspacioHasMateria" />
+        </set>
+        <set name="materiaHasHorarios" table="materia_has_horario" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="materia_idMateria" not-null="true" />
+            </key>
+            <one-to-many class="com.proyecto.modelo.MateriaHasHorario" />
+        </set>
+        <set name="matriculaHasMaterias" table="matricula_has_materia" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="materia_idMateria" not-null="true" />
+            </key>
+            <one-to-many class="com.proyecto.modelo.MatriculaHasMateria" />
+        </set>
+        <set name="materiaHasDocentes" table="materia_has_docente" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="materia_idMateria" not-null="true" />
+            </key>
+            <one-to-many class="com.proyecto.modelo.MateriaHasDocente" />
+        </set>
+    </class>
+</hibernate-mapping>

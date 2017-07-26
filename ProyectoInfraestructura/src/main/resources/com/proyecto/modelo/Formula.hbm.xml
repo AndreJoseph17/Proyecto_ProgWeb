@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 26/07/2017 14:26:50 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.proyecto.modelo.Formula" table="formula" catalog="proyecto" optimistic-lock="version">
+        <id name="idFormula" type="java.lang.Integer">
+            <column name="idFormula" />
+            <generator class="identity" />
+        </id>
+        <property name="nombre" type="string">
+            <column name="Nombre" length="45" />
+        </property>
+        <property name="formula" type="string">
+            <column name="Formula" length="90" />
+        </property>
+        <property name="descripcion" type="string">
+            <column name="Descripcion" length="45" />
+        </property>
+        <set name="normativas" table="normativa" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="formula_idFormula" not-null="true" />
+            </key>
+            <one-to-many class="com.proyecto.modelo.Normativa" />
+        </set>
+    </class>
+</hibernate-mapping>

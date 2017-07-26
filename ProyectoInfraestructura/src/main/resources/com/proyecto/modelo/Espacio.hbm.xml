@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 26/07/2017 14:26:50 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.proyecto.modelo.Espacio" table="espacio" catalog="proyecto" optimistic-lock="version">
+        <id name="idEspacio" type="java.lang.Integer">
+            <column name="idEspacio" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="normativa" class="com.proyecto.modelo.Normativa" fetch="select">
+            <column name="normativa_idNormativa" />
+        </many-to-one>
+        <many-to-one name="tipo" class="com.proyecto.modelo.Tipo" fetch="select">
+            <column name="tipo_idTipo" not-null="true" />
+        </many-to-one>
+        <property name="nombreEspacio" type="string">
+            <column name="nombre_espacio" length="45" />
+        </property>
+        <property name="capacidad" type="java.lang.Integer">
+            <column name="capacidad" />
+        </property>
+        <property name="iluminacion" type="string">
+            <column name="iluminacion" length="5" />
+        </property>
+        <property name="internet" type="string">
+            <column name="internet" length="45" />
+        </property>
+        <property name="nrescritorios" type="java.lang.Integer">
+            <column name="nrescritorios" />
+        </property>
+        <set name="equipoInformaticos" table="equipo_informatico" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="Espacio_idEspacio" />
+            </key>
+            <one-to-many class="com.proyecto.modelo.EquipoInformatico" />
+        </set>
+        <set name="espacioHasMaterias" table="espacio_has_materia" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="Espacio_idEspacio" not-null="true" />
+            </key>
+            <one-to-many class="com.proyecto.modelo.EspacioHasMateria" />
+        </set>
+    </class>
+</hibernate-mapping>
