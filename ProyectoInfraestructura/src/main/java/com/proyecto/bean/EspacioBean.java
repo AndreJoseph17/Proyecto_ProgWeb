@@ -1,8 +1,8 @@
 package com.proyecto.bean;
 
 
-import com.mycompany.proyecto.model.*;
-import com.mycompany.proyecto.util.HibernateUtil;
+import com.proyecto.modelo.*;
+import com.proyecto.util.HibernateUtil;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;

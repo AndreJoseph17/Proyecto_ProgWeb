@@ -1,7 +1,7 @@
 package com.proyecto.bean;
 
-import com.mycompany.proyecto.model.*;
-import com.mycompany.proyecto.util.HibernateUtil;
+import com.proyecto.modelo.*;
+import com.proyecto.util.HibernateUtil;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -170,7 +170,9 @@ public class MateriaBean {
         boolean loggedIn = false;
          
         if(nombre != null && descripcion != null) {
-            Materia m = new Materia(nombre, descripcion);
+            Materia m = new Materia();
+            m.setNombre(nombre);
+            m.setDescripcion(descripcion);
             Session session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
 
@@ -365,7 +367,7 @@ public class MateriaBean {
         List<MateriaHasDocente> listaHorarios=null;
         Session session=HibernateUtil.getSessionFactory().openSession();
         Transaction t=session.beginTransaction();
-        String hql="FROM materia_has_docente";
+        String hql="FROM MateriasHasDocente";
         try{
             listaHorarios=session.createQuery(hql).list();
             t.commit();
