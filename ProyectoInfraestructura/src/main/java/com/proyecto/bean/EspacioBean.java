@@ -27,7 +27,7 @@ public class EspacioBean {
     private String numEscritorios;
     private String iluminacion;
     private String internet;
-    private String numAlumnos;
+    private String capacidad;
     
     private List<Espacio> espacios;
     private Espacio espacioSeleccionado;
@@ -102,16 +102,16 @@ public class EspacioBean {
     public String getIluminacion() {
         return iluminacion;
     }
-    public String getNumAlumnos() {
-        return numAlumnos;
+    public String getCapacidad() {
+        return capacidad;
     }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    public void setNumAlumnos(String numAlumnos) {
-        this.numAlumnos = numAlumnos;
+    public void setCapacidad(String capacidad) {
+        this.capacidad = capacidad;
     }
 
     public String getNumEscritorios() {
@@ -154,6 +154,7 @@ public class EspacioBean {
     public void registrarEspacio(ActionEvent event) {
            
        
+        
     }   
 
     private List<Espacio> listarEspacios() {
