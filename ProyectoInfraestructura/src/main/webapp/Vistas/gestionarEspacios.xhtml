@@ -61,7 +61,7 @@
                                     <p:separator />
                                     <p:separator />
 
-                                    <p:outputLabel for="capacidad"  value="Capacidad de estudiates:"  />
+                                    <p:outputLabel for="capacidad"  value="Capacidad de estudiates:"/>
                                     <p:inputText id="capacidad" value="#{espacioBean.capacidad}" required="true"  />
                                    
                                     <p:separator />
@@ -71,8 +71,8 @@
                                 <h:panelGrid columns="2" cellpadding="15" rendered="#{espacioBean.tipoEspacio == '2' or espacioBean.tipoEspacio == '4'}">
                                     <p:separator />
                                     <p:separator />
-                                    <h:outputLabel for="numEscritorios"  value="Número de escritorios:"   />
-                                    <p:inputText  id="numEscritorios" value="#{espacioBean.numEscritorios}"  required="true"  />
+                                    <h:outputLabel for="numEscritoriosOficina"  value="Número de escritorios:"   />
+                                    <p:inputText  id="numEscritoriosOficina" value="#{espacioBean.numEscritorios}"  required="true"  />
                                     
                                     <p:separator />
                                     <p:separator />
@@ -83,8 +83,8 @@
                                     <p:separator />
                                     <h:outputLabel for="otroEspacio"  value="Otro espacio (Tipo):"   />
                                     <p:inputText  id="otroEspacio" value="#{espacioBean.otroEspacio}"  required="true"  />
-                                    <h:outputLabel for="numEscritorios"  value="Número de escritorios:"   />
-                                    <p:inputText  id="numEscritorios" value="#{espacioBean.numEscritorios}"  required="true"  />
+                                    <h:outputLabel for="numEscritoriosOtros"  value="Número de escritorios:"   />
+                                    <p:inputText  id="numEscritoriosOtros" value="#{espacioBean.numEscritorios}"  required="true"  />
                                     <p:separator />
                                     <p:separator />
                                 </h:panelGrid>
@@ -146,15 +146,90 @@
 
                                 </p:panelGrid>
                                 <p:tabView>
- <!-- HORARIOS-->
+                                    
+ <!-- Materias-->                       <p:tab title="Materias" rendered="#{espacioBean.espacioSeleccionado.tipo.idTipo == 1 or espacioBean.tipoEspacio == 3 }">
+                                            <h:panelGrid columns="3" cellpadding="15" >
+                                                <p:outputLabel for="materiaAgregar" value="Seleccione una materia" />
+                                                <p:selectOneMenu requiredMessage="Seleccione una materia" id="materiaAgregar" 
+                                                       value="#{espacioBean.idMateriaAgregar}" style="width:225px" >
+
+                                                     <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>                
+                                                     <f:selectItem itemLabel="Mate" itemValue="1" />
+                                                     <f:selectItem itemLabel="Lenguajes" itemValue="2"  />
+                                                     <f:selectItem itemLabel="Programacion" itemValue="3"  />
+                                                     <f:selectItem itemLabel="Analisis" itemValue="4"  />
+                                                     <f:selectItem itemLabel="Otros" itemValue="5"  />
+                                                     <f:ajax render="@form" />
+                                                 </p:selectOneMenu>
+                                                <p:commandButton value="Agregar"  actionListener="#{espacioBean.registrarMateria}" />
+                                            </h:panelGrid>
+                                            <br></br>
+                                            <!-- TABLA MATERIAS AGREGADAS EN EL AULA O LABORATORIO-->
+                                            <p:panel style="width: 700px;margin: 20px; background-color:#ece9d8;" >
+                                                <p:commandButton process="tablaMateriasAgregadas" update="tablaMateriasAgregadas" value="-" />
+                                                <p:dataTable var="materia" value="#{espacioBean.materias}" 
+                                                         selectionMode="single" id="tablaMateriasAgregadas">
+                                                
+                                                     <p:column headerText="Id">
+                                                         <h:outputText value="#{materia.materia.idMateria}" />
+                                                    </p:column>
+                                                    
+                                                    <p:column headerText="Nombre">
+                                                        <h:outputText value="#{materia.materia.nombre}" />
+                                                    </p:column>
+
+                                                    <p:column headerText="Descripcion">
+                                                        <h:outputText value="#{materia.materia.descripcion}" />
+                                                    </p:column>
+
+
+                                                </p:dataTable> 
+                                            </p:panel>
+                                                
+                                        </p:tab>
+ 
+ <!-- Equipos informaticos-->           <p:tab title="Equipos Informaticos">
+     
+                                            <h:panelGrid columns="2" cellpadding="8" >
+                                                <h:outputLabel for="nombreEquipo"  value="Nombre del Equipo:"   />
+                                                <p:inputText  id="nombreEquipo" value="#{espacioBean.nombreEquipo}"  required="true"  />
+                                                
+                                                <h:outputLabel for="descripcionEquipo"  value="Descripcion del Equipo:"   />
+                                                <p:inputText  id="descripcionEquipo" value="#{espacioBean.descripcionEquipo}"  required="true"  />
+                                    
+                                                <p:commandButton value="Agregar"  actionListener="#{espacioBean.registrarEquipo}" />
+                                            </h:panelGrid>
+                                            <br></br>
+                                            <!-- TABLA MATERIAS AGREGADAS EN EL AULA O LABORATORIO-->
+                                            <p:panel style="width: 700px;margin: 20px; background-color:#ece9d8;" >
+                                                <p:commandButton process="tablaEquiposAgregados" update="tablaEquiposAgregados" value="-" />
+                                                
+                                                <p:dataTable var="equipo" value="#{espacioBean.equipos}" 
+                                                         selectionMode="single" id="tablaEquiposAgregados">
+                                                
+                                                     <p:column headerText="Id">
+                                                         <h:outputText value="#{equipo.idEquipoInformatico}" />
+                                                    </p:column>
+                                                    
+                                                    <p:column headerText="Nombre">
+                                                        <h:outputText value="#{equipo.nombre}" />
+                                                    </p:column>
+
+                                                    <p:column headerText="Descripcion">
+                                                        <h:outputText value="#{equipo.descripcion}" />
+                                                    </p:column>
+
+
+                                                </p:dataTable> 
+                                            </p:panel>
+                                           
+                                        </p:tab>
+ <!-- Normativa-->
                                     
                                         <p:tab title="Normativa">
                                             
                                         </p:tab>
                                        
- <!-- DOCENTES-->                       <p:tab title="Materias">
-                                           
-                                        </p:tab>
                                        
                                     </p:tabView>
                             </p:outputPanel>

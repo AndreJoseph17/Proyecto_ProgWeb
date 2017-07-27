@@ -17,6 +17,12 @@ import org.primefaces.event.UnselectEvent;
 
 @ManagedBean
 public class EspacioBean {
+    
+            
+    private String nombreEquipo;
+    private String descripcionEquipo;
+    
+    private String idMateriaAgregar;
     private String otroEspacio;
     private String tipoEspacio;
     private String idEspacio;
@@ -31,7 +37,55 @@ public class EspacioBean {
     
     private List<Espacio> espacios;
     private Espacio espacioSeleccionado;
+    
+    private List<EspacioHasMateria> materias;
+    private List<EquipoInformatico> equipos;
 
+    public String getDescripcionEquipo() {
+        return descripcionEquipo;
+    }
+
+    public void setDescripcionEquipo(String descripcionEquipo) {
+        this.descripcionEquipo = descripcionEquipo;
+    }
+
+    public String getNombreEquipo() {
+        return nombreEquipo;
+    }
+
+    public void setNombreEquipo(String nombreEquipo) {
+        this.nombreEquipo = nombreEquipo;
+    }
+
+    public List<EquipoInformatico> getEquipos() {
+        return equipos;
+    }
+
+    public void setEquipos(List<EquipoInformatico> equipos) {
+        this.equipos = equipos;
+    }
+    
+    
+    
+    public List<EspacioHasMateria> getMaterias() {
+        return materias;
+    }
+
+    public void setMaterias(List<EspacioHasMateria> materias) {
+        this.materias = materias;
+    }
+    
+    
+
+    public String getIdMateriaAgregar() {
+        return idMateriaAgregar;
+    }
+
+    public void setIdMateriaAgregar(String idMateriaAgregar) {
+        this.idMateriaAgregar = idMateriaAgregar;
+    }
+
+    
     public String getOtroEspacio() {
         return otroEspacio;
     }
@@ -174,4 +228,11 @@ public class EspacioBean {
     }
     
   
+    public void registrarMateria(ActionEvent event){
+        
+    }
+    public void registrarEquipo(ActionEvent event){
+        
+    }
+    
 }
