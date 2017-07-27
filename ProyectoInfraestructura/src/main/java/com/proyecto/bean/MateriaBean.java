@@ -238,10 +238,12 @@ public class MateriaBean {
     } 
     
     public void registrarHorario(ActionEvent event) {
+        
         Integer idD = Integer.parseInt(idDia);
         Integer idH = Integer.parseInt(idHorario);
         
         if(idD!= 0 && idH != 0 ) {
+            
             
             Dia dia = new Dia();
             dia.setIdDias(idD);
