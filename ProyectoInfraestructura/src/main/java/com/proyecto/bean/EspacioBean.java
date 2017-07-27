@@ -17,12 +17,16 @@ import org.primefaces.event.UnselectEvent;
 
 @ManagedBean
 public class EspacioBean {
+    private int disponibilidad;
+    private int funcionalidad;
+    private int equipamiento;
     
-            
+    private String idFormula;
     private String nombreEquipo;
     private String descripcionEquipo;
     
     private String idMateriaAgregar;
+    
     private String otroEspacio;
     private String tipoEspacio;
     private String idEspacio;
@@ -40,6 +44,42 @@ public class EspacioBean {
     
     private List<EspacioHasMateria> materias;
     private List<EquipoInformatico> equipos;
+
+    public int getDisponibilidad() {
+        return disponibilidad;
+    }
+
+    public void setDisponibilidad(int disponibilidad) {
+        this.disponibilidad = disponibilidad;
+    }
+
+    public int getEquipamiento() {
+        return equipamiento;
+    }
+
+    public void setEquipamiento(int equipamiento) {
+        this.equipamiento = equipamiento;
+    }
+
+    public int getFuncionalidad() {
+        return funcionalidad;
+    }
+
+    public void setFuncionalidad(int funcionalidad) {
+        this.funcionalidad = funcionalidad;
+    }
+    
+    
+
+    public String getIdFormula() {
+        return idFormula;
+    }
+
+    public void setIdFormula(String idFormula) {
+        this.idFormula = idFormula;
+    }
+    
+    
 
     public String getDescripcionEquipo() {
         return descripcionEquipo;

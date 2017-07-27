@@ -1,0 +1,207 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+   
+     <h:head>
+        <title>Infraestructura</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="./../Plantilla/template.xhtml">
+                
+            <ui:define name="cuerpo" >
+                <h:form >
+                    
+                    <h:panelGrid columns="3" cellpadding="18" >
+                        <p:outputLabel for="estudiantes" value="Seleccione un estudiante:" />
+                        <p:selectOneMenu  id="estudiantes" value="#{matriculaBean.idEstudiante}" style="width:225px" >
+
+                            <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>                
+                            <f:selectItem itemLabel="John Gamel" itemValue="2"  />
+                            <f:selectItem itemLabel="Liss Salinas" itemValue="3"  />
+                            <f:selectItem itemLabel="Jonnathan Peñaranda" itemValue="1" />
+                            <f:selectItem itemLabel="Kimberly Cordoba" itemValue="4"  />
+                            <f:selectItem itemLabel="Emili Arizaga" itemValue="5"  />
+                        </p:selectOneMenu>
+                        
+                    </h:panelGrid>
+                    <p:layout  id="MATERIAS" style="height:450px;margin:22px;border: 50px">
+    <!--            --><p:layoutUnit style="margin-top:20px ;" position="west"  id="idLayoutUnitWest" >
+                        <br/><br/><br/>
+                            <p:panel header="Registro de Materias"  style="margin: 20px" >
+                                <h:panelGrid columns="2" cellpadding="13">
+
+                                    <h:outputLabel for="nombre" value="Nombre" />
+                                    <p:inputText id="nombre" value="#{materiaBean.nombre}" required="true" />
+
+                                     <h:outputLabel for="descripcion" value="Descripcion" />
+                                    <p:inputText id="descripcion" value="#{materiaBean.descripcion}" required="true" />
+
+
+                                   <f:facet name="footer">
+                                    <p:commandButton update="MATERIAS"   value="Resgistrar" actionListener="#{materiaBean.registrarMateria}"/>
+                                   </f:facet>  
+                                </h:panelGrid>
+                            </p:panel>
+
+
+                        </p:layoutUnit>
+
+    <!--            --> <p:layoutUnit position="center" id="idLayoutUnitCenter"  style="margin-right:20px ">
+                            <p:panel style="margin: 20px; background-color:#ece9d8;" >
+                                <br></br>
+                                <f:facet name="header">
+                                    Materias Registradas
+                                </f:facet>  
+                                <p:commandButton process="tablaMaterias" update="materiaDetalle" icon="ui-icon-search" value="View" oncomplete="PF('materiaDialogo').show()" />
+                                <p:dataTable var="materia" value="#{materiaBean.materias}" 
+                                             selectionMode="single" selection="#{materiaBean.materiaSeleccionada}"
+                                             rowKey="#{materia.idMateria}" id="tablaMaterias"  >
+
+                                    <p:column headerText="Codigo">
+                                        <h:outputText value="#{materia.idMateria}" />
+                                    </p:column>
+
+                                    <p:column headerText="Nombre">
+                                        <h:outputText value="#{materia.nombre}" />
+                                    </p:column>
+
+                                    <p:column headerText="Descripcion">
+                                        <h:outputText value="#{materia.descripcion}" />
+                                    </p:column>
+                                </p:dataTable> 
+
+                                </p:panel>
+                            <p:dialog  style="height:450px;margin:10px;border: 10px" header="Informacion de la materia" widgetVar="materiaDialogo" showEffect="explode" hideEffect="bounce" resizable="false">
+                                <p:outputPanel id="materiaDetalle" >
+                                    <p:panelGrid  columns="2" rendered="#{not empty materiaBean.materiaSeleccionada}" columnClasses="label,value">
+
+                                        <h:outputText value="Id:" />
+                                        <h:outputText value="#{materiaBean.materiaSeleccionada.idMateria}" />
+
+                                        <h:outputText value="Nombre " />
+                                        <h:outputText value="#{materiaBean.materiaSeleccionada.nombre }" />
+
+                                    </p:panelGrid>
+                                    <p:tabView>
+     <!-- HORARIOS-->
+
+                                            <p:tab title="Horarios">
+                                                <h:panelGrid columns="5" cellpadding="10">
+
+                                                    <p:outputLabel for="Dia" value="Dia:" />
+                                                    <p:selectOneMenu id="Dia" value="#{materiaBean.idDia}" style="width:200px">
+                                                        <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                                                        <f:selectItem itemLabel="Lunes" itemValue="1" />
+                                                        <f:selectItem itemLabel="Martes" itemValue="2" />
+                                                        <f:selectItem itemLabel="Miercoles" itemValue="3" />
+                                                        <f:selectItem itemLabel="Jueves" itemValue="4" />
+                                                        <f:selectItem itemLabel="Viernes" itemValue="5" />
+
+                                                    </p:selectOneMenu>
+
+                                                     <p:outputLabel for="Horario" value="Horario:" />
+                                                    <p:selectOneMenu id="Horario" value="#{materiaBean.idHorario}" style="width:200px">
+                                                        <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                                                        <f:selectItem itemLabel="07:00 a 09:00" itemValue="1" />
+                                                        <f:selectItem itemLabel="09:00 a 11:00" itemValue="2" />
+                                                        <f:selectItem itemLabel="11:00 a 13:00" itemValue="3" />
+                                                        <f:selectItem itemLabel="13:00 a 15:00" itemValue="4" />
+                                                        <f:selectItem itemLabel="15:00 a 17:00" itemValue="5" />
+                                                        <f:selectItem itemLabel="17:00 a 19:00" itemValue="6" />
+                                                        <f:selectItem itemLabel="19:00 a 21:00" itemValue="7" />
+                                                    </p:selectOneMenu>
+                                                     <p:commandButton value="+"  actionListener="#{materiaBean.registrarHorario}" />
+
+                                                </h:panelGrid>
+                                                <br></br>
+                                                <!-- TABLA_HORARIOS-->
+                                                <p:panel style="width: 700px;margin: 20px; background-color:#ece9d8;" >
+                                                    <p:commandButton process="tablaHorarios" update="tablaHorarios" value="-" />
+                                                    <p:dataTable var="horario" value="#{materiaBean.horarios}" 
+                                                             selectionMode="single" id="tablaHorarios">
+
+
+                                                    <p:column headerText="Dia">
+                                                        <h:outputText value="#{horario.dia.diaSemana}" />
+                                                    </p:column>
+
+                                                    <p:column headerText="De">
+                                                        <h:outputText value="#{horario.horario.horaInicio}" />
+                                                    </p:column>
+
+                                                    <p:column headerText="A">
+                                                        <h:outputText value="#{horario.horario.horaFinal}" />
+                                                    </p:column>
+
+
+                                                </p:dataTable> 
+                                                </p:panel>
+
+
+                                            </p:tab>
+
+     <!-- DOCENTES-->                       <p:tab title="Docentes">
+                                                <h:panelGrid columns="5" cellpadding="10">
+
+                                                    <p:outputLabel for="docente" value="Seleccione un docente" />
+                                                    <p:selectOneMenu id="docente" value="#{materiaBean.idDia}" style="width:200px">
+                                                        <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>
+                                                        <f:selectItems value="#{materiaBean.docente}" />
+
+                                                    </p:selectOneMenu>
+
+
+                                                     <p:commandButton value="Agregar"  actionListener="#{materiaBean.registrarDocente}" />
+
+                                                </h:panelGrid>
+                                                <br></br>
+                                                <!-- TABLA_HORARIOS-->
+                                                <p:panel style="width: 700px;margin: 20px; background-color:#ece9d8;" >
+                                                    <p:commandButton process="tablaDocentes" update="tablaDocentes" value="-" />
+                                                    <p:dataTable var="docente" value="#{materiaBean.docentes}" 
+                                                             selectionMode="single" id="tablaDocentes">
+
+
+                                                        <p:column headerText="Cedula">
+                                                            <h:outputText value="#{docente.docente.cedulaDocente}" />
+                                                        </p:column>
+
+                                                        <p:column headerText="Nombre">
+                                                            <h:outputText value="#{docente.docente.nombre}" />
+                                                        </p:column>
+
+                                                        <p:column headerText="Apellido">
+                                                            <h:outputText value="#{docente.docente.apellido}" />
+                                                        </p:column>
+
+
+                                                    </p:dataTable> 
+                                                </p:panel>
+
+
+                                            </p:tab>
+
+                                        </p:tabView>
+                                </p:outputPanel>
+                            </p:dialog>
+
+                        </p:layoutUnit>
+                    </p:layout>
+                </h:form>    
+            </ui:define>
+
+        </ui:composition>
+        
+       
+
+    </h:body>
+    
+</html>
