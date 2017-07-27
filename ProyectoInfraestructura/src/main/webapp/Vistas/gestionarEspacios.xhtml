@@ -225,18 +225,48 @@
                                            
                                         </p:tab>
  <!-- Normativa-->
-                                    
+
                                         <p:tab title="Normativa">
-                                             <h:panelGrid columns="2" cellpadding="8" >
-                                                 <p:commandButton value="Agregar"  actionListener="#{espacioBean.registrarEquipo}" />
-                                                <h:outputLabel for="nombreEquipo"  value="Nombre del Equipo:"   />
-                                                <p:inputText  id="nombreEquipo" value="#{espacioBean.nombreEquipo}"  required="true"  />
+                                            <p:layout style="width:1000px; height: 360px;">
+                                                <p:layoutUnit position="west"  >
+                                                     <!-- Panel del registro de la normativa-->
+                                                    <p:panel style="width: 550px;margin: 20px; background-color:#ece9d8;" >
+                                                    
+                                                        <h:panelGrid columns="2" cellpadding="8" >
+                                                        <p:outputLabel for="formula" value="Seleccione una formula" />
+                                                        <p:selectOneMenu  id="formula" value="#{espacioBean.idFormula}" style="width:225px" >
+
+                                                             <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>                
+                                                             <f:selectItem itemLabel="y=a+b+c" itemValue="1" />
+                                                             <f:selectItem itemLabel="y=a+b-b" itemValue="2"  />
+                                                             
+                                                        </p:selectOneMenu>
+                                                        
+                                                        <h:outputLabel for="funcionalidad" value="Funcionalidad:" />
+                                                        <p:spinner id="funcionalidad" value="#{espacioBean.funcionalidad}" min="0" max="10" />
+ 
+                                                        <h:outputLabel for="equipamiento" value="Equipamiento:" />
+                                                        <p:spinner id="equipamiento" value="#{espacioBean.equipamiento}" min="0" max="10" />
+ 
+                                                        <h:outputLabel for="disponibilidad" value="Disponibilidad:" />
+                                                        <p:spinner id="disponibilidad" value="#{espacioBean.disponibilidad}" min="0" max="10" />
+                                                        
+                                                        <p:commandButton  update="tablaEquiposAgregados" value="Verificar Normativa" />
                                                 
-                                                <h:outputLabel for="descripcionEquipo"  value="Descripcion del Equipo:"   />
-                                                <p:inputText  id="descripcionEquipo" value="#{espacioBean.descripcionEquipo}"  required="true"  />
-                                    
-                                                
-                                            </h:panelGrid> 
+                                                    </h:panelGrid>
+                                                    </p:panel>
+                                                 
+                                                </p:layoutUnit>
+
+                                                <p:layoutUnit position="center">
+                                                    <!-- Panel de la formula-->
+                                                    <p:panel header="Formula" style="width: 310px;height: 280px;margin: 20px; background-color:#ece9d8;" >
+                                                           
+                                                   </p:panel>
+                                                </p:layoutUnit>
+                                            </p:layout>
+
+                                             
                                         </p:tab>
                                        
                                        
