@@ -200,7 +200,7 @@
                                                 <p:commandButton value="Agregar"  actionListener="#{espacioBean.registrarEquipo}" />
                                             </h:panelGrid>
                                             <br></br>
-                                            <!-- TABLA MATERIAS AGREGADAS EN EL AULA O LABORATORIO-->
+                                            <!-- TABLA EQUIPOS AGREGADAS EN EL ESPACIO-->
                                             <p:panel style="width: 700px;margin: 20px; background-color:#ece9d8;" >
                                                 <p:commandButton process="tablaEquiposAgregados" update="tablaEquiposAgregados" value="-" />
                                                 
@@ -227,7 +227,16 @@
  <!-- Normativa-->
                                     
                                         <p:tab title="Normativa">
-                                            
+                                             <h:panelGrid columns="2" cellpadding="8" >
+                                                 <p:commandButton value="Agregar"  actionListener="#{espacioBean.registrarEquipo}" />
+                                                <h:outputLabel for="nombreEquipo"  value="Nombre del Equipo:"   />
+                                                <p:inputText  id="nombreEquipo" value="#{espacioBean.nombreEquipo}"  required="true"  />
+                                                
+                                                <h:outputLabel for="descripcionEquipo"  value="Descripcion del Equipo:"   />
+                                                <p:inputText  id="descripcionEquipo" value="#{espacioBean.descripcionEquipo}"  required="true"  />
+                                    
+                                                
+                                            </h:panelGrid> 
                                         </p:tab>
                                        
                                        
