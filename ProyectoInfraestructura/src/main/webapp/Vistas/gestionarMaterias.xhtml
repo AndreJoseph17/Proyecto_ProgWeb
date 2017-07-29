@@ -73,7 +73,7 @@
                             </h:form>
                         </p:panel>
     
-    <p:dialog id="dialogo" style="height:450px;margin:10px;border: 10px" header="Informacion de la materia" widgetVar="materiaDialogo" showEffect="explode" hideEffect="bounce" resizable="false">
+    <p:dialog style="height:450px;margin:10px;border: 10px" header="Informacion de la materia" widgetVar="materiaDialogo" showEffect="explode" hideEffect="bounce" resizable="false">
                             
                             <p:outputPanel id="materiaDetalle" >
                                 
@@ -127,7 +127,7 @@
                                             <p:panel style="width: 700px;margin: 20px; background-color:#ece9d8;" >
                                                 <p:commandButton process="tablaHorarios" update="tablaHorarios" value="-" />
                                                 <p:dataTable var="horario" value="#{materiaBean.horarios}" 
-                                                         selectionMode="single" id="tablaHorarios">
+                                                          id="tablaHorarios">
                                                 
                                                 
                                                 <p:column headerText="Dia">

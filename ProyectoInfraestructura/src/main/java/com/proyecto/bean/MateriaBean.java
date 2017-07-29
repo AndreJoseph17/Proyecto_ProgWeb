@@ -4,6 +4,7 @@ import com.proyecto.dao.MateriaDao;
 import com.proyecto.imp.MateriaDaoImp;
 import com.proyecto.modelo.*;
 import com.proyecto.util.HibernateUtil;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ import org.primefaces.event.UnselectEvent;
 
 @ManagedBean
 @ViewScoped
-public class MateriaBean {
+public class MateriaBean  {
      EntityManagerFactory entityMf ;
         EntityManager entityM;
         MateriaHasHorarioJpaController materiaController;
@@ -134,6 +135,8 @@ public class MateriaBean {
 
     public List<MateriaHasHorario> getHorarios() {
         return listarHorarios();
+     //return null;
+    
     }
 
     public void setHorarios(List<MateriaHasHorario> horarios) {
@@ -272,10 +275,14 @@ public class MateriaBean {
    }
 
     private List<MateriaHasHorario> listarHorarios() {
+        MateriaDao dao= new MateriaDaoImp();
+        Materia m= dao.buscarMateria(materiaSeleccionada.getIdMateria());
+        // = dao.buscarMateria(materiaSeleccionada.getIdMateria());
+        /*
         List<MateriaHasHorario> listaHorarios=null;
         Session session=HibernateUtil.getSessionFactory().openSession();
         Transaction t=session.beginTransaction();
-        String hql="FROM materia_has_horario";
+        String hql="FROM MateriaHasHorario";
         try{
             listaHorarios=session.createQuery(hql).list();
             t.commit();
@@ -284,6 +291,28 @@ public class MateriaBean {
         catch(Exception e){
             t.rollback();
         }
+        
+        List<MateriaHasHorario> lista=null;
+        for (int i = 0 ; i<listaHorarios.size();i++){
+           if(listaHorarios.get(i).getMateria().getIdMateria().equals(materiaSeleccionada.getIdMateria()))
+                lista.add(listaHorarios.get(i));
+        }
+        */
+        
+        List<MateriaHasHorario> listaHorarios= new ArrayList(m.getMateriaHasHorarios());
+        
+        /* MateriaDao mDao = new MateriaDaoImp();
+        Horario horario = mDao.buscarHorario(1);
+        Dia dia = mDao.buscarDia(1);
+         Materia m = mDao.buscarMateria(1);
+        
+         MateriaHasHorarioId materiaHasHorarioId = new MateriaHasHorarioId(m.getIdMateria(),horario.getIdHorario(),dia.getIdDias());
+
+                MateriaHasHorario mm = new MateriaHasHorario(materiaHasHorarioId, dia, horario, materiaSeleccionada);
+        
+        
+        listaHorarios.add(mm);*/
+        // List l = new ArrayList<MateriaHasHorario>(m.getMateriaHasHorarios());
         return listaHorarios;
     }
 
