@@ -29,6 +29,12 @@ import javax.transaction.UserTransaction;
  */
 public class MateriaHasHorarioJpaController implements Serializable {
 
+    public MateriaHasHorarioJpaController(EntityManagerFactory emf) {
+        this.emf = emf;
+    }
+    
+    
+    
     public MateriaHasHorarioJpaController(UserTransaction utx, EntityManagerFactory emf) {
         this.utx = utx;
         this.emf = emf;

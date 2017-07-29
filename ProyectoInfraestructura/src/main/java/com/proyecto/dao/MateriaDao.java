@@ -5,7 +5,7 @@
  */
 package com.proyecto.dao;
 
-import com.proyecto.modelo.Materia;
+import com.proyecto.modelo.*;
 import java.util.List;
 
 /**
@@ -18,4 +18,15 @@ public interface MateriaDao {
     public void agregarMaterias(Materia materia);
     public void eliminarMateria(Materia materia);
     public void actualizarMateria(Materia materia);
+    
+    public Materia buscarMateria (int codigo);
+    public Horario buscarHorario (int codigo);
+    public Docente buscarDocente (int codigo);
+    
+    public Dia buscarDia (int codigo);
+    
+    public void agregarMateriaHasHorario(MateriaHasHorario materiaHasHorario);
+    
+    
+    
 }

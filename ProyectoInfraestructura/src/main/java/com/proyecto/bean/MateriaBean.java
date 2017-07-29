@@ -11,6 +11,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -21,6 +24,10 @@ import org.primefaces.event.UnselectEvent;
 
 @ManagedBean
 public class MateriaBean {
+     EntityManagerFactory entityMf ;
+        EntityManager entityM;
+        MateriaHasHorarioJpaController materiaController;
+        
     private String nombre;
     private String descripcion;
     
@@ -164,7 +171,12 @@ public class MateriaBean {
     //      METODOS             //
     ////////////////////////////
     
- 
+    public void crearInstancia(){
+        entityMf = Persistence.createEntityManagerFactory("persistencia_infraestructura");
+        materiaController = new MateriaHasHorarioJpaController(entityMf);
+        entityM = materiaController.getEntityManager();
+        
+    }
 
     public void registrarMateria(ActionEvent event) {  
        
@@ -230,58 +242,29 @@ public class MateriaBean {
     } 
     
     public void registrarHorario(ActionEvent event) {
-        
+       
         MateriaDao mDao = new MateriaDaoImp();
         
-        
-        Integer idD = Integer.parseInt(idDia);
-        Integer idH = Integer.parseInt(idHorario);
-        
-        Horario h = new Horario();
-        
-        if(idD!= 0 && idH != 0 ) {
-            
-        }
-        
-        /*Integer idD = Integer.parseInt(idDia);
-        Integer idH = Integer.parseInt(idHorario);
-        
-        if(idD!= 0 && idH != 0 ) {
-            
-            
-            Dia dia = new Dia();
-            dia.setIdDias(idD);
-            dia.setDiaSemana("Viernes");
-            Horario horario = new Horario();
-            horario.setIdHorario(idH);
-            horario.setHoraInicio("07:00");
-            horario.setHoraFinal("09:11");
-            
-            
-            
-            MateriaHasHorarioId materiaHasHorarioId = new MateriaHasHorarioId(materiaSeleccionada.getIdMateria(),horario.getIdHorario(),dia.getIdDias());
-            
-            MateriaHasHorario m = new MateriaHasHorario(materiaHasHorarioId, dia, horario, materiaSeleccionada);
-            
-            Session session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
+        //int idD = 1;
+        //int idH = 1;
+       // int idD = Integer.parseInt(idDia);
+       // int idH = Integer.parseInt(idHorario);
 
-            session.save(m);
-            session.getTransaction().commit();
-            session.close();
-            
-          
-           // message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", nombre);
-        } else {
-            
-            
-           // message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Loggin Error", "Invalid credentials");
-        }
-         
-        //FacesContext.getCurrentInstance().addMessage(null, message);
-       // context.addCallbackParam("loggedIn", loggedIn);
-       */
+       
         
+        
+                Horario horario = mDao.buscarHorario(2);
+                Dia dia = mDao.buscarDia(2);
+                
+                
+                MateriaHasHorarioId materiaHasHorarioId = new MateriaHasHorarioId(materiaSeleccionada.getIdMateria(),horario.getIdHorario(),dia.getIdDias());
+
+                MateriaHasHorario m = new MateriaHasHorario(materiaHasHorarioId, dia, horario, materiaSeleccionada);
+                
+                mDao.agregarMateriaHasHorario(m);
+               // materiaController.create(m);
+          
+      
     }
     
    public List<Materia> listarMaterias(){
