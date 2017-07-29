@@ -1,5 +1,7 @@
 package com.proyecto.bean;
 
+import com.proyecto.dao.MateriaDao;
+import com.proyecto.imp.MateriaDaoImp;
 import com.proyecto.modelo.*;
 import com.proyecto.util.HibernateUtil;
 import java.util.HashMap;
@@ -165,31 +167,22 @@ public class MateriaBean {
  
 
     public void registrarMateria(ActionEvent event) {  
-       // RequestContext context = RequestContext.getCurrentInstance();
-        //FacesMessage message = null;
-        boolean loggedIn = false;
+       
         if(nombre != null && descripcion != null) {
             Materia m = new Materia();
             m.setNombre(nombre);
             m.setDescripcion(descripcion);
-            Session session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-
-            session.save(m);
-            session.getTransaction().commit();
-            session.close();
             
-            loggedIn = true;
-           // message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", nombre);
-        } else {
-            loggedIn = false;
-           // message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Loggin Error", "Invalid credentials");
+            
+        MateriaDao mDao = new MateriaDaoImp();
+        mDao.agregarMaterias(m);
         }
-         
-        //FacesContext.getCurrentInstance().addMessage(null, message);
-       // context.addCallbackParam("loggedIn", loggedIn);
-       
+        else{
+           
+        }
+           // message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Loggin Error", "Invalid credentials");
         
+           
     }   
     public void login(ActionEvent event) {
         RequestContext context = RequestContext.getCurrentInstance();
@@ -238,7 +231,19 @@ public class MateriaBean {
     
     public void registrarHorario(ActionEvent event) {
         
+        MateriaDao mDao = new MateriaDaoImp();
+        
+        
         Integer idD = Integer.parseInt(idDia);
+        Integer idH = Integer.parseInt(idHorario);
+        
+        Horario h = new Horario();
+        
+        if(idD!= 0 && idH != 0 ) {
+            
+        }
+        
+        /*Integer idD = Integer.parseInt(idDia);
         Integer idH = Integer.parseInt(idHorario);
         
         if(idD!= 0 && idH != 0 ) {
@@ -275,7 +280,7 @@ public class MateriaBean {
          
         //FacesContext.getCurrentInstance().addMessage(null, message);
        // context.addCallbackParam("loggedIn", loggedIn);
-       
+       */
         
     }
     
