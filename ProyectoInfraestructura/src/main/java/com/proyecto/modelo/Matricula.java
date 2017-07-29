@@ -12,7 +12,12 @@ import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedStoredProcedureQueries;
+import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Parameter;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 
 /**
@@ -22,6 +27,15 @@ import javax.persistence.Table;
 @Table(name="matricula"
     ,catalog="proyecto"
 )
+
+@NamedStoredProcedureQuery(
+        name = "matricular",
+        procedureName = "matricula",
+        parameters = {   @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "codigo_matricula"),
+                            @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "codigo_materia"),
+                            @StoredProcedureParameter(mode = ParameterMode.OUT, type = Integer.class, name = "valor_retorno")         
+        })
+
 public class Matricula  implements java.io.Serializable {
 
 

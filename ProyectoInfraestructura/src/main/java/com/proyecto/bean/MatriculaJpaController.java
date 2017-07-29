@@ -30,8 +30,13 @@ import javax.transaction.UserTransaction;
  */
 public class MatriculaJpaController implements Serializable {
 
+    /*
     public MatriculaJpaController(UserTransaction utx, EntityManagerFactory emf) {
         this.utx = utx;
+        this.emf = emf;
+    }
+    */
+    public MatriculaJpaController(EntityManagerFactory emf){
         this.emf = emf;
     }
     private UserTransaction utx = null;
