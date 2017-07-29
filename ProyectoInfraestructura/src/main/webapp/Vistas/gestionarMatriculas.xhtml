@@ -35,18 +35,77 @@
                     </h:panelGrid>
                     <p:layout  id="PanelMatriculados" style="height:380px;margin:22px;border: 20px">
     <!--            --><p:layoutUnit style="margin-top:20px ;" position="west"  id="idLayoutUnitWest" >
-                        <br/><br/><br/>
-                            <p:panel header="Estudiantes Matriculados"  style="margin: 20px" >
-                                
+                        
+                             <p:panel header="Estudiantes Matriculados" style="margin: 20px; " >
+                                <br></br>
+                                 
+                                <p:commandButton process="tablaMatriculados" update="tablaMatriculados" value="-"  />
+                                <p:dataTable style="width:500px;" var="matriculas" value="#{matriculaBean.matriculas}" 
+                                             selectionMode="single" selection="#{matriculaBean.estudianteSeleccionado}"
+                                             rowKey="#{matriculas.idMatricula}" id="tablaMatriculados"  >
+
+
+                                    <p:column headerText="Nombre">
+                                        <h:outputText value="#{matriculas.estudiante.nombre}" />
+                                    </p:column>
+
+                                    <p:column headerText=" Apellido">
+                                        <h:outputText value="#{matriculas.estudiante.apellido}" />
+                                    </p:column>
+                                    
+                                    <p:column headerText=" Cedula">
+                                        <h:outputText value="#{matriculas.estudiante.cedula}" />
+                                    </p:column>
+                                    
+                                    <p:column headerText=" Carrera">
+                                        <h:outputText value="#{matriculas.estudiante.carrera}" />
+                                    </p:column>
+
+
+
+                                </p:dataTable> 
                             </p:panel>
                         
                         </p:layoutUnit>
 
     <!--            --> <p:layoutUnit position="center" id="idLayoutUnitCenter"  style="margin-right:20px ">
                             <p:panel header="Materias Asignadas" style="margin: 20px; background-color:#ece9d8;" >
-                                <br></br>
-                                 
                                 
+                                 
+                                <h:panelGrid columns="2" cellpadding="20" >
+                                    <p:selectOneMenu  id="materias" value="#{matriculaBean.idMateriaAgregar}" style="width:275px" >
+
+                                        <f:selectItem itemLabel="Seleccione una Materia" itemValue="" noSelectionOption="true"/>                
+                                        <f:selectItem itemLabel="Analisis" itemValue="2"  />
+                                        <f:selectItem itemLabel="Programacion" itemValue="3"  />
+                                    </p:selectOneMenu>
+                                    
+                                    <p:commandButton update="PanelMaterias" value="Agregar Materia" actionListener="#{matriculaBean.agregarMateria}"/>
+
+                                </h:panelGrid>
+                                
+                                
+                                <!--            -->
+                                <p:panel id="PanelMaterias">
+                                    <p:commandButton process="tablaMaterias" update="PanelMaterias" value="-"  />
+                                    <p:dataTable style="width:500px;" var="materia" value="#{matriculaBean.materias}" 
+                                                     selectionMode="single" selection="#{matriculaBean.materiaSeleccionada}"
+                                                 rowKey="#{materia.idMateria}" id="tablaMaterias">
+
+                                        <p:column headerText="Nombre">
+                                            <h:outputText value="#{materia.nombre}" />
+                                        </p:column>
+
+                                        <p:column headerText="Descripcion">
+                                            <h:outputText value="#{materia.Descripcion}" />
+                                        </p:column>
+
+                                        
+
+                                    
+
+                                    </p:dataTable>
+                                </p:panel>
                             </p:panel>
                            
 
