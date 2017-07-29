@@ -168,7 +168,6 @@ public class MateriaBean {
        // RequestContext context = RequestContext.getCurrentInstance();
         //FacesMessage message = null;
         boolean loggedIn = false;
-         
         if(nombre != null && descripcion != null) {
             Materia m = new Materia();
             m.setNombre(nombre);
