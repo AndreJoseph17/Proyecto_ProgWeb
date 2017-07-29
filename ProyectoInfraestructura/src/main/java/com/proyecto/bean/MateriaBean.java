@@ -1,5 +1,7 @@
 package com.proyecto.bean;
 
+import com.proyecto.dao.MateriaDao;
+import com.proyecto.imp.MateriaDaoImp;
 import com.proyecto.modelo.*;
 import com.proyecto.util.HibernateUtil;
 import java.util.HashMap;
@@ -7,20 +9,42 @@ import java.util.List;
 import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.primefaces.component.api.UIData;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
 
 @ManagedBean
+@ViewScoped
 public class MateriaBean {
+     EntityManagerFactory entityMf ;
+        EntityManager entityM;
+        MateriaHasHorarioJpaController materiaController;
+        
+        private Materia auxMat;
+
+    public void setAuxMat(Materia auxMat) {
+        this.auxMat = auxMat;
+    }
+
+    public Materia getAuxMat() {
+        return auxMat;
+    }
+        
+        
     private String nombre;
     private String descripcion;
+    private int idMateriaSeleccionadada;
     
     private String docente;
     private String idDia;
@@ -34,7 +58,7 @@ public class MateriaBean {
     
     private List<MateriaHasDocente> docentes;
     
-    private Materia materiaSeleccionada;
+    private Materia materiaSeleccionada = new Materia();
     private MateriaHasHorario horarioSeleccionado;
 
     public Map<String, String> getDiasDisponibles() {
@@ -59,6 +83,14 @@ public class MateriaBean {
 
     public void setDocente(String docente) {
         this.docente = docente;
+    }
+
+    public int getIdMateriaSeleccionadada() {
+        return idMateriaSeleccionadada;
+    }
+
+    public void setIdMateriaSeleccionadada(int idMateriaSeleccionadada) {
+        this.idMateriaSeleccionadada = idMateriaSeleccionadada;
     }
     
     
@@ -129,6 +161,7 @@ public class MateriaBean {
     
 
     public Materia getMateriaSeleccionada() {
+        
         return materiaSeleccionada;
     }
 
@@ -162,122 +195,60 @@ public class MateriaBean {
     //      METODOS             //
     ////////////////////////////
     
- 
+    public void crearInstancia(){
+        entityMf = Persistence.createEntityManagerFactory("persistencia_infraestructura");
+        materiaController = new MateriaHasHorarioJpaController(entityMf);
+        entityM = materiaController.getEntityManager();
+        
+    }
 
     public void registrarMateria(ActionEvent event) {  
-       // RequestContext context = RequestContext.getCurrentInstance();
-        //FacesMessage message = null;
-        boolean loggedIn = false;
-         
+       
         if(nombre != null && descripcion != null) {
             Materia m = new Materia();
             m.setNombre(nombre);
             m.setDescripcion(descripcion);
-            Session session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-
-            session.save(m);
-            session.getTransaction().commit();
-            session.close();
             
-            loggedIn = true;
-           // message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", nombre);
-        } else {
-            loggedIn = false;
-           // message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Loggin Error", "Invalid credentials");
+            
+            MateriaDao mDao = new MateriaDaoImp();
+            mDao.agregarMaterias(m);
         }
-         
-        //FacesContext.getCurrentInstance().addMessage(null, message);
-       // context.addCallbackParam("loggedIn", loggedIn);
-       
+        else{
+           
+        }
+           // message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Loggin Error", "Invalid credentials");
         
+           
     }   
-    public void login(ActionEvent event) {
-        RequestContext context = RequestContext.getCurrentInstance();
-        FacesMessage message = null;
-        
-        Integer idD = Integer.parseInt(idDia);
-        Integer idH = Integer.parseInt(idHorario);
-       idD=1;
-       idH=1;
-        boolean loggedIn = false;
-        
-        if(!FacesContext.getCurrentInstance().isPostback()) {
-            RequestContext.getCurrentInstance().execute("alert('This onload script is added from backing bean.')");
-        }
-         
-        if(idD!= 0 && idH != 0 ) {
-            loggedIn = true;
-            Dia dia = new Dia();
-            dia.setIdDias(1);
-            dia.setDiaSemana("Lunes");
-            Horario horario = new Horario();
-            horario.setIdHorario(1);
-            horario.setHoraInicio("07:00");
-            horario.setHoraFinal("09:11");
-            
-            
-            MateriaHasHorarioId materiaHasHorarioId = new MateriaHasHorarioId(materiaSeleccionada.getIdMateria(),horario.getIdHorario(),dia.getIdDias());
-            
-            MateriaHasHorario m = new MateriaHasHorario(materiaHasHorarioId, dia, horario, materiaSeleccionada);
-            Session session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-
-            session.save(m);
-            session.getTransaction().commit();
-            session.close();
-            
-            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", idDia+" "+idHorario);
-        } else {
-            loggedIn = false;
-            message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Loggin Error", "Invalid credentials");
-        }
-         
-        FacesContext.getCurrentInstance().addMessage(null, message);
-        context.addCallbackParam("loggedIn", loggedIn);
-    } 
-    
+   
     public void registrarHorario(ActionEvent event) {
-        
-        Integer idD = Integer.parseInt(idDia);
-        Integer idH = Integer.parseInt(idHorario);
-        
-        if(idD!= 0 && idH != 0 ) {
-            
-            
-            Dia dia = new Dia();
-            dia.setIdDias(idD);
-            dia.setDiaSemana("Viernes");
-            Horario horario = new Horario();
-            horario.setIdHorario(idH);
-            horario.setHoraInicio("07:00");
-            horario.setHoraFinal("09:11");
-            
-            
-            
-            MateriaHasHorarioId materiaHasHorarioId = new MateriaHasHorarioId(materiaSeleccionada.getIdMateria(),horario.getIdHorario(),dia.getIdDias());
-            
-            MateriaHasHorario m = new MateriaHasHorario(materiaHasHorarioId, dia, horario, materiaSeleccionada);
-            
-            Session session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-
-            session.save(m);
-            session.getTransaction().commit();
-            session.close();
-            
-          
-           // message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Agregado", nombre);
-        } else {
-            
-            
-           // message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Loggin Error", "Invalid credentials");
-        }
-         
-        //FacesContext.getCurrentInstance().addMessage(null, message);
-       // context.addCallbackParam("loggedIn", loggedIn);
        
+        MateriaDao mDao = new MateriaDaoImp();
+        int idD = Integer.parseInt(idDia);
+        int idH = Integer.parseInt(idHorario);
+
+       
+        Horario horario = mDao.buscarHorario(idH);
+        Dia dia = mDao.buscarDia(idD);
         
+        //materiaSeleccionada = mDao.buscarMateria(1);
+        MateriaHasHorarioId materiaHasHorarioId = new MateriaHasHorarioId(materiaSeleccionada.getIdMateria(),horario.getIdHorario(),dia.getIdDias());
+
+        MateriaHasHorario m = new MateriaHasHorario(materiaHasHorarioId, dia, horario, materiaSeleccionada);
+
+        mDao.agregarMateriaHasHorario(m);
+               // materiaController.create(m);
+
+    }
+    
+    public void otroMetodo(ActionEvent event){
+        try {
+            System.out.println("alskfjalskdfjadslfkjdsalf");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+    
     }
     
    public List<Materia> listarMaterias(){
