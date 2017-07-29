@@ -17,10 +17,11 @@
         <ui:composition template="./../Plantilla/template.xhtml">
                 
             <ui:define name="cuerpo" >
-                <h:form >
+                
                 <p:layout  id="MATERIAS" style="height:450px;margin:22px;border: 50px">
 <!--            --><p:layoutUnit style="margin-top:20px ;" position="west"  id="idLayoutUnitWest" >
                     <br/><br/><br/>
+                    <h:form id="form1" >
                         <p:panel header="Registro de Materias"  style="margin: 20px" >
                             <h:panelGrid columns="2" cellpadding="13">
                                     
@@ -32,55 +33,68 @@
                                 
                                 
                                <f:facet name="footer">
-                                <p:commandButton update="MATERIAS"   value="Resgistrar" actionListener="#{materiaBean.registrarMateria}"/>
+                                <p:commandButton update=":MATERIAS"   value="Resgistrar" actionListener="#{materiaBean.registrarMateria}"/>
                                </f:facet>  
                             </h:panelGrid>
                         </p:panel>
                     
-
+                    </h:form>
                     </p:layoutUnit>
 
-<!--            --> <p:layoutUnit position="center" id="idLayoutUnitCenter"  style="margin-right:20px ">
-                        <p:panel style="margin: 20px; background-color:#ece9d8;" >
+<!--            --> <p:layoutUnit position="center" id="idLayoutUnitCenter"  style="margin-right:20px "  >
+                        <p:panel style="margin: 20px; background-color:#ece9d8;" id="panelMatReg">
                             <br></br>
+                            <h:form id="form2">
                             <f:facet name="header">
                                 Materias Registradas
                             </f:facet>  
-                            <p:commandButton process="tablaMaterias" update="materiaDetalle" icon="ui-icon-search" value="View" oncomplete="PF('materiaDialogo').show()" />
-                            <p:dataTable var="materia" value="#{materiaBean.materias}" 
+                            <p:commandButton process="tablaMaterias" update=":materiaDetalle" icon="ui-icon-search" value="Ver" oncomplete="PF('materiaDialogo').show()" />
+ 
+                            <p:dataTable var="materia" value="#{materiaBean.materias}"  id="tablaMaterias"  
                                          selectionMode="single" selection="#{materiaBean.materiaSeleccionada}"
-                                         rowKey="#{materia.idMateria}" id="tablaMaterias"  >
+                                         rowKey="#{materia.idMateria}">
 
-                                <p:column headerText="Codigo">
-                                    <h:outputText value="#{materia.idMateria}" />
-                                </p:column>
+                            <p:column headerText="Codigo">
+                                <h:outputText value="#{materia.idMateria}" />
+                            </p:column>
 
-                                <p:column headerText="Nombre">
-                                    <h:outputText value="#{materia.nombre}" />
-                                </p:column>
+                            <p:column headerText="Nombre">
+                                <h:outputText value="#{materia.nombre}" />
+                            </p:column>
 
-                                <p:column headerText="Descripcion">
-                                    <h:outputText value="#{materia.descripcion}" />
-                                </p:column>
+                            <p:column headerText="Descripcion">
+                                <h:outputText value="#{materia.descripcion}" />
+                            </p:column>
+                                
+                            
+                           
+                                
                             </p:dataTable> 
-
-                            </p:panel>
-                        <p:dialog  style="height:450px;margin:10px;border: 10px" header="Informacion de la materia" widgetVar="materiaDialogo" showEffect="explode" hideEffect="bounce" resizable="false">
+                            </h:form>
+                        </p:panel>
+    
+    <p:dialog id="dialogo" style="height:450px;margin:10px;border: 10px" header="Informacion de la materia" widgetVar="materiaDialogo" showEffect="explode" hideEffect="bounce" resizable="false">
+                            
                             <p:outputPanel id="materiaDetalle" >
-                                <p:panelGrid  columns="2" rendered="#{not empty materiaBean.materiaSeleccionada}" columnClasses="label,value">
+                                
+                                <p:panelGrid  columns="2"  columnClasses="label,value">
                                     
                                     <h:outputText value="Id:" />
                                     <h:outputText value="#{materiaBean.materiaSeleccionada.idMateria}" />
 
                                     <h:outputText value="Nombre " />
-                                    <h:outputText value="#{materiaBean.materiaSeleccionada.nombre }" />
-
+                                    <h:outputText value="#{materiaBean.materiaSeleccionada.nombre}" />
+                                    
                                 </p:panelGrid>
+                                
                                 <p:tabView>
  <!-- HORARIOS-->
                                     
                                         <p:tab title="Horarios">
+                                            <h:form id="form3">
                                             <h:panelGrid columns="5" cellpadding="10">
+                                                
+                                                
                                                 
                                                 <p:outputLabel for="Dia" value="Dia:" />
                                                 <p:selectOneMenu id="Dia" value="#{materiaBean.idDia}" style="width:200px">
@@ -104,9 +118,10 @@
                                                     <f:selectItem itemLabel="17:00 a 19:00" itemValue="6" />
                                                     <f:selectItem itemLabel="19:00 a 21:00" itemValue="7" />
                                                 </p:selectOneMenu>
-                                                 <p:commandButton value="+"  actionListener="#{materiaBean.registrarHorario}" />
-                                                
+                                                 <p:commandButton value="+"  actionListener="#{materiaBean.registrarHorario}" process="form3" />
+                                               
                                             </h:panelGrid>
+                                            
                                             <br></br>
                                             <!-- TABLA_HORARIOS-->
                                             <p:panel style="width: 700px;margin: 20px; background-color:#ece9d8;" >
@@ -130,7 +145,7 @@
                                                 
                                             </p:dataTable> 
                                             </p:panel>
-                                            
+                                            </h:form>
                                             
                                         </p:tab>
                                        
@@ -174,14 +189,16 @@
                                             
                                             
                                         </p:tab>
-                                       
-                                    </p:tabView>
+                                    
+                                    
+                                </p:tabView>
+                                    
                             </p:outputPanel>
+                            
                         </p:dialog>
 
                     </p:layoutUnit>
-                </p:layout>
-                </h:form>    
+                </p:layout> 
             </ui:define>
 
         </ui:composition>
