@@ -25,4 +25,16 @@ public class MatriculaBean {
     private Estudiante estudiante;
     private String periodo;
     private String observacion;
+
+    public String getIdEstudiante() {
+        return idEstudiante;
+    }
+
+    public void setIdEstudiante(String idEstudiante) {
+        this.idEstudiante = idEstudiante;
+    }
+    
+    public void matricularEstrudiante(){
+        
+    }
 }
