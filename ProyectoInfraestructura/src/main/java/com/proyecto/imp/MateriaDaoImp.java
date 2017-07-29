@@ -199,6 +199,26 @@ public class MateriaDaoImp implements MateriaDao{
             }
         }
     }
+
+    @Override
+    public List<MateriaHasHorario> buscarHorarioHasMateria() {
+        MateriaHasHorario materiahashorario=new MateriaHasHorario();
+        List <MateriaHasHorario> listaDocentes=new ArrayList<MateriaHasHorario>();
+        Session session=HibernateUtil.getSessionFactory().openSession();
+        Transaction t=session.beginTransaction();
+        String hql="FROM MateriaHasHorario";
+       // Query query=session.createQuery(hql);
+        //query.setInteger("codigo",codigo);
+        try{
+        listaDocentes=session.createQuery(hql).list();        
+        t.commit();
+        session.close();
+        }
+        catch(Exception e){
+        t.rollback();
+        }
+        return listaDocentes;    
+    }
     
     
 }
