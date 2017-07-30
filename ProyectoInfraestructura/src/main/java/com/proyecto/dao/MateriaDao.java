@@ -25,9 +25,10 @@ public interface MateriaDao {
     
     public Dia buscarDia (int codigo);
     public List<MateriaHasHorario> buscarHorarioHasMateria ();
+    public List<MateriaHasDocente> buscarDocenteHasMateria ();
     
     public void agregarMateriaHasHorario(MateriaHasHorario materiaHasHorario);
-    
+    public void agregarMateriaHasDocente(MateriaHasDocente materiaHasDocente);
     
     
 }

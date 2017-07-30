@@ -28,21 +28,7 @@ import org.primefaces.event.UnselectEvent;
 @ManagedBean
 @ViewScoped
 public class MateriaBean  {
-     EntityManagerFactory entityMf ;
-        EntityManager entityM;
-        MateriaHasHorarioJpaController materiaController;
-        
-        private Materia auxMat;
-
-    public void setAuxMat(Materia auxMat) {
-        this.auxMat = auxMat;
-    }
-
-    public Materia getAuxMat() {
-        return auxMat;
-    }
-        
-        
+    
     private String nombre;
     private String descripcion;
     private int idMateriaSeleccionadada;
@@ -50,18 +36,29 @@ public class MateriaBean  {
     private String docente;
     private String idDia;
     private String idHorario;
+    private String idDocente;
     
     private Map<String,String> horariosDisponibles;
     private Map<String,String> diasDisponibles;
+    private Map<String,String> docentesDisponibles;
     
     private List<Materia> materias;
-    private List<MateriaHasHorario> horarios;
+    private List<MateriaHasHorario> horarios= new ArrayList<>();
     
     private List<MateriaHasDocente> docentes;
     
     private Materia materiaSeleccionada = new Materia();
     private MateriaHasHorario horarioSeleccionado;
 
+    public Map<String, String> getDocentesDisponibles() {
+         return extraerDocentes();
+    }
+
+    public void setDocentesDisponibles(Map<String, String> docentesDisponibles) {
+        this.docentesDisponibles = docentesDisponibles;
+    }
+
+    
     public Map<String, String> getDiasDisponibles() {
         return extraerDias();
     }
@@ -78,6 +75,14 @@ public class MateriaBean  {
         this.horariosDisponibles = horariosDisponibles;
     }
 
+    public String getIdDocente() {
+        return idDocente;
+    }
+
+    public void setIdDocente(String idDocente) {
+        this.idDocente = idDocente;
+    }
+    
     public String getDocente() {
         return docente;
     }
@@ -112,8 +117,34 @@ public class MateriaBean  {
     }
 
     public List<MateriaHasDocente> getDocentes() {
-        return listarDocentes();
+        MateriaDao dao= new MateriaDaoImp();
+        
+        List<MateriaHasDocente> lista = dao.buscarDocenteHasMateria();
+        List<MateriaHasDocente> aux = new ArrayList<>();
+        for (int i = 0; i < lista.size(); i++) {
+            if (lista.get(i).getMateria().getIdMateria()== materiaSeleccionada.getIdMateria()) {
+                aux.add(lista.get(i));
+            }
+        }
+       return aux;
+       
+        
     }
+    public List<MateriaHasHorario> getHorarios() {
+        MateriaDao dao= new MateriaDaoImp();
+        
+        List<MateriaHasHorario> lista = dao.buscarHorarioHasMateria();
+        List<MateriaHasHorario> aux = new ArrayList<>();
+        for (int i = 0; i < lista.size(); i++) {
+            if (lista.get(i).getMateria().getIdMateria() == materiaSeleccionada.getIdMateria()) {
+                aux.add(lista.get(i));
+            }
+        }
+       return aux;
+
+    
+    }
+
 
     public void setDocentes(List<MateriaHasDocente> docentes) {
         this.docentes = docentes;
@@ -133,12 +164,7 @@ public class MateriaBean  {
         return listarMaterias();
     }
 
-    public List<MateriaHasHorario> getHorarios() {
-        return listarHorarios();
-     //return null;
     
-    }
-
     public void setHorarios(List<MateriaHasHorario> horarios) {
         this.horarios = horarios;
     }
@@ -198,12 +224,7 @@ public class MateriaBean  {
     //      METODOS             //
     ////////////////////////////
     
-    public void crearInstancia(){
-        entityMf = Persistence.createEntityManagerFactory("persistencia_infraestructura");
-        materiaController = new MateriaHasHorarioJpaController(entityMf);
-        entityM = materiaController.getEntityManager();
-        
-    }
+   
 
     public void registrarMateria(ActionEvent event) {  
        
@@ -212,16 +233,13 @@ public class MateriaBean  {
             m.setNombre(nombre);
             m.setDescripcion(descripcion);
             
-            
             MateriaDao mDao = new MateriaDaoImp();
             mDao.agregarMaterias(m);
         }
         else{
            
         }
-           // message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Loggin Error", "Invalid credentials");
-        
-           
+      
     }   
    
     public void registrarHorario(ActionEvent event) {
@@ -242,6 +260,21 @@ public class MateriaBean  {
         mDao.agregarMateriaHasHorario(m);
                // materiaController.create(m);
 
+    }
+    public void registrarDocente(ActionEvent event){
+        MateriaDao mDao = new MateriaDaoImp();
+        int idD = Integer.parseInt(idDocente);
+       
+
+       
+        Docente docente = mDao.buscarDocente(idD);
+       
+        //materiaSeleccionada = mDao.buscarMateria(1);
+        MateriaHasDocenteId materiaHasDocenteId = new MateriaHasDocenteId(materiaSeleccionada.getIdMateria(),docente.getIdDocente());
+
+        MateriaHasDocente m = new MateriaHasDocente(materiaHasDocenteId, docente, materiaSeleccionada);
+
+        mDao.agregarMateriaHasDocente(m);
     }
     
     public void otroMetodo(ActionEvent event){
@@ -269,52 +302,23 @@ public class MateriaBean  {
         }
         return listaMaterias;
     }
-   public void process(ActionEvent event){
-       RequestContext.getCurrentInstance().execute("alert('jfjfjfjf')");
-       
-   }
-
-    private List<MateriaHasHorario> listarHorarios() {
-        MateriaDao dao= new MateriaDaoImp();
-        Materia m= dao.buscarMateria(materiaSeleccionada.getIdMateria());
-        // = dao.buscarMateria(materiaSeleccionada.getIdMateria());
-        /*
-        List<MateriaHasHorario> listaHorarios=null;
+   public  List<MateriaHasHorario> process(){
+       List<MateriaHasHorario> listaMaterias=null;
         Session session=HibernateUtil.getSessionFactory().openSession();
         Transaction t=session.beginTransaction();
         String hql="FROM MateriaHasHorario";
         try{
-            listaHorarios=session.createQuery(hql).list();
+            listaMaterias=session.createQuery(hql).list();
             t.commit();
             session.close();
         }
         catch(Exception e){
-            t.rollback();
+        t.rollback();
         }
-        
-        List<MateriaHasHorario> lista=null;
-        for (int i = 0 ; i<listaHorarios.size();i++){
-           if(listaHorarios.get(i).getMateria().getIdMateria().equals(materiaSeleccionada.getIdMateria()))
-                lista.add(listaHorarios.get(i));
-        }
-        */
-        
-        List<MateriaHasHorario> listaHorarios= new ArrayList(m.getMateriaHasHorarios());
-        
-        /* MateriaDao mDao = new MateriaDaoImp();
-        Horario horario = mDao.buscarHorario(1);
-        Dia dia = mDao.buscarDia(1);
-         Materia m = mDao.buscarMateria(1);
-        
-         MateriaHasHorarioId materiaHasHorarioId = new MateriaHasHorarioId(m.getIdMateria(),horario.getIdHorario(),dia.getIdDias());
+        return listaMaterias;
+   }
 
-                MateriaHasHorario mm = new MateriaHasHorario(materiaHasHorarioId, dia, horario, materiaSeleccionada);
-        
-        
-        listaHorarios.add(mm);*/
-        // List l = new ArrayList<MateriaHasHorario>(m.getMateriaHasHorarios());
-        return listaHorarios;
-    }
+    
 
     private Map<String, String> extraerDias() {
         Map<String,String> map = new HashMap<>();
@@ -379,5 +383,30 @@ public class MateriaBean  {
             t.rollback();
         }
         return listaHorarios;
+    }
+
+    private Map<String, String> extraerDocentes() {
+        Map<String,String> map = new HashMap<>();
+        
+        List<Docente> listaDocentes=null;
+        
+        Session session=HibernateUtil.getSessionFactory().openSession();
+        Transaction t=session.beginTransaction();
+        String hql="FROM Docente";
+        try{
+            listaDocentes=session.createQuery(hql).list();
+            t.commit();
+            session.close();
+        }
+        catch(Exception e){
+        t.rollback();
+        }
+        List<Dia> l = null;
+        
+        for (int i = 0 ; i<listaDocentes.size();i++){
+           
+            map.put(listaDocentes.get(i).getNombre()+" "+listaDocentes.get(i).getApellido(), listaDocentes.get(i).getIdDocente().toString());
+        }
+        return map;
     }
 }

@@ -8,6 +8,7 @@ package com.proyecto.imp;
 import com.proyecto.dao.TipoDao;
 import com.proyecto.modelo.Tipo;
 import com.proyecto.util.HibernateUtil;
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -92,6 +93,24 @@ public class TipoDaoImp implements TipoDao {
                 session.close();
             }
         }
+    }
+    @Override
+    public Tipo buscarTipo(int codigo) {
+        Tipo tipo = new Tipo();
+        List<Tipo> listaTipo = new ArrayList<Tipo>();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction t = session.beginTransaction();
+        String hql = "FROM Tipo where idTipo=" + codigo;
+        
+        try {
+            listaTipo = session.createQuery(hql).list();
+            tipo = listaTipo.get(0);
+            t.commit();
+            session.close();
+        } catch (Exception e) {
+            t.rollback();
+        }
+        return tipo;
     }
 
 }

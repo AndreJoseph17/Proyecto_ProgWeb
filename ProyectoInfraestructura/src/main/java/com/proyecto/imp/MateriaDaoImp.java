@@ -10,6 +10,8 @@ import com.proyecto.modelo.*;
 import com.proyecto.util.HibernateUtil;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.Hibernate;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -17,11 +19,11 @@ import org.hibernate.Transaction;
  *
  * @author andre
  */
-public class MateriaDaoImp implements MateriaDao{
+public class MateriaDaoImp implements MateriaDao {
 
     @Override
     public List<Materia> listarMaterias() {
-        
+
         List<Materia> lista = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction t = session.beginTransaction();
@@ -54,7 +56,7 @@ public class MateriaDaoImp implements MateriaDao{
                 session.close();
             }
         }
-        
+
     }
 
     @Override
@@ -96,88 +98,85 @@ public class MateriaDaoImp implements MateriaDao{
             }
         }
     }
-    
+
     @Override
     public Materia buscarMateria(int codigo) {
-        Materia materia=new Materia();
-        List <Materia> listaDocentes=new ArrayList<Materia>();
-        Session session=HibernateUtil.getSessionFactory().openSession();
-        Transaction t=session.beginTransaction();
-        String hql="FROM Materia where idMateria="+codigo;
-       // Query query=session.createQuery(hql);
+        Materia materia = new Materia();
+        List<Materia> listaDocentes = new ArrayList<Materia>();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction t = session.beginTransaction();
+        String hql = "FROM Materia where idMateria=" + codigo;
+        // Query query=session.createQuery(hql);
         //query.setInteger("codigo",codigo);
-        try{
-        listaDocentes=session.createQuery(hql).list();
-        materia=listaDocentes.get(0);
-        t.commit();
-        session.close();
+        try {
+            listaDocentes = session.createQuery(hql).list();
+            materia = listaDocentes.get(0);
+            t.commit();
+            session.close();
+        } catch (Exception e) {
+            t.rollback();
         }
-        catch(Exception e){
-        t.rollback();
-        }
-        return materia;    
+        return materia;
     }
-    
-     @Override
+
+    @Override
     public Horario buscarHorario(int codigo) {
-        Horario horario=new Horario();
-        List <Horario> listaDocentes=new ArrayList<Horario>();
-        Session session=HibernateUtil.getSessionFactory().openSession();
-        Transaction t=session.beginTransaction();
-        String hql="FROM Horario where idHorario="+codigo;
-       // Query query=session.createQuery(hql);
+        Horario horario = new Horario();
+        List<Horario> listaDocentes = new ArrayList<Horario>();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction t = session.beginTransaction();
+        String hql = "FROM Horario where idHorario=" + codigo;
+        // Query query=session.createQuery(hql);
         //query.setInteger("codigo",codigo);
-        try{
-        listaDocentes=session.createQuery(hql).list();
-        horario=listaDocentes.get(0);
-        t.commit();
-        session.close();
+        try {
+            listaDocentes = session.createQuery(hql).list();
+            horario = listaDocentes.get(0);
+            t.commit();
+            session.close();
+        } catch (Exception e) {
+            t.rollback();
         }
-        catch(Exception e){
-        t.rollback();
-        }
-        return horario;    
+        return horario;
     }
+
     @Override
     public Docente buscarDocente(int codigo) {
-        Docente docente=new Docente();
-        List <Docente> listaDocentes=new ArrayList<Docente>();
-        Session session=HibernateUtil.getSessionFactory().openSession();
-        Transaction t=session.beginTransaction();
-        String hql="FROM Docente where idDocente="+codigo;
-       // Query query=session.createQuery(hql);
+        Docente docente = new Docente();
+        List<Docente> listaDocentes = new ArrayList<Docente>();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction t = session.beginTransaction();
+        String hql = "FROM Docente where idDocente=" + codigo;
+        // Query query=session.createQuery(hql);
         //query.setInteger("codigo",codigo);
-        try{
-        listaDocentes=session.createQuery(hql).list();
-        docente=listaDocentes.get(0);
-        t.commit();
-        session.close();
+        try {
+            listaDocentes = session.createQuery(hql).list();
+            docente = listaDocentes.get(0);
+            t.commit();
+            session.close();
+        } catch (Exception e) {
+            t.rollback();
         }
-        catch(Exception e){
-        t.rollback();
-        }
-        return docente;    
+        return docente;
     }
-    
+
     @Override
     public Dia buscarDia(int codigo) {
-        Dia docente=new Dia();
-        List <Dia> listaDocentes=new ArrayList<Dia>();
-        Session session=HibernateUtil.getSessionFactory().openSession();
-        Transaction t=session.beginTransaction();
-        String hql="FROM Dia where idDias="+codigo;
-       // Query query=session.createQuery(hql);
+        Dia docente = new Dia();
+        List<Dia> listaDocentes = new ArrayList<Dia>();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction t = session.beginTransaction();
+        String hql = "FROM Dia where idDias=" + codigo;
+        // Query query=session.createQuery(hql);
         //query.setInteger("codigo",codigo);
-        try{
-        listaDocentes=session.createQuery(hql).list();
-        docente=listaDocentes.get(0);
-        t.commit();
-        session.close();
+        try {
+            listaDocentes = session.createQuery(hql).list();
+            docente = listaDocentes.get(0);
+            t.commit();
+            session.close();
+        } catch (Exception e) {
+            t.rollback();
         }
-        catch(Exception e){
-        t.rollback();
-        }
-        return docente;    
+        return docente;
     }
 
     @Override
@@ -201,24 +200,80 @@ public class MateriaDaoImp implements MateriaDao{
     }
 
     @Override
-    public List<MateriaHasHorario> buscarHorarioHasMateria() {
-        MateriaHasHorario materiahashorario=new MateriaHasHorario();
-        List <MateriaHasHorario> listaDocentes=new ArrayList<MateriaHasHorario>();
-        Session session=HibernateUtil.getSessionFactory().openSession();
-        Transaction t=session.beginTransaction();
-        String hql="FROM MateriaHasHorario";
-       // Query query=session.createQuery(hql);
-        //query.setInteger("codigo",codigo);
-        try{
-        listaDocentes=session.createQuery(hql).list();        
-        t.commit();
-        session.close();
+    public void agregarMateriaHasDocente(MateriaHasDocente materiaHasDocente) {
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            session.save(materiaHasDocente);
+            session.getTransaction().commit();
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            session.getTransaction().rollback();
+        } finally {
+            if (session != null) {
+
+                session.close();
+            }
         }
-        catch(Exception e){
-        t.rollback();
-        }
-        return listaDocentes;    
     }
-    
-    
+
+    @Override
+    public List<MateriaHasHorario> buscarHorarioHasMateria() {
+
+        List<MateriaHasHorario> listaHorarios = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction t = session.beginTransaction();
+        String hql = "FROM MateriaHasHorario";
+        //String hql="FROM MateriaHasHorario where materia_idMateria="+codigo;
+
+        //query.setInteger("codigo",codigo);
+        try {
+            listaHorarios = session.createQuery(hql).list();
+            for (MateriaHasHorario mhh : listaHorarios) {
+                Hibernate.initialize(mhh.getDia());
+                Hibernate.initialize(mhh.getHorario());
+                Hibernate.initialize(mhh.getMateria());
+            }
+            //listaDocentes = session.createCriteria(MateriaHasHorario.class).list();
+            t.commit();
+
+        } catch (Exception e) {
+            t.rollback();
+        }
+
+        
+        session.close();
+        return listaHorarios;
+
+    }
+
+    @Override
+    public List<MateriaHasDocente> buscarDocenteHasMateria() {
+        List<MateriaHasDocente> listaDocentes = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction t = session.beginTransaction();
+        String hql = "FROM MateriaHasDocente";
+        //String hql="FROM MateriaHasHorario where materia_idMateria="+codigo;
+
+        //query.setInteger("codigo",codigo);
+        try {
+            listaDocentes = session.createQuery(hql).list();
+            for (MateriaHasDocente mhh : listaDocentes) {
+                Hibernate.initialize(mhh.getDocente());
+                Hibernate.initialize(mhh.getMateria());
+            }
+            //listaDocentes = session.createCriteria(MateriaHasHorario.class).list();
+            t.commit();
+
+        } catch (Exception e) {
+            t.rollback();
+        }
+
+        
+        session.close();
+        return listaDocentes;
+    }
+
 }

@@ -5,7 +5,7 @@
  */
 package com.proyecto.dao;
 
-import com.proyecto.modelo.Espacio;
+import com.proyecto.modelo.*;
 import java.util.List;
 
 /**
@@ -18,4 +18,5 @@ public interface EspacioDao {
     public void agregarEspacio(Espacio espacio);
     public void eliminarEspacio(Espacio espacio);
     public void actualizarEspacio(Espacio espacio);
+    public Espacio buscarEspacio(int codigo);
 }

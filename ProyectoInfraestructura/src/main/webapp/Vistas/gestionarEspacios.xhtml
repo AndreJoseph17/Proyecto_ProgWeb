@@ -19,10 +19,10 @@
         <ui:composition template="./../Plantilla/template.xhtml">
                 
             <ui:define name="cuerpo" >
-                <h:form  >
                 <p:layout   id="ESPACIOS" style="height:450px;margin:20px;">
 <!--            --><p:layoutUnit size="580" position="west" style=" height:200px">
-                        
+                    <h:form  id="form1">
+
                         <p:panel header="Registro de Espacios"  style="height:382px;margin: 20px;" >
                         <p:scrollPanel style="width:500px;height:338px">
                                 <h:panelGrid columns="2" cellpadding="10" >
@@ -92,7 +92,7 @@
                                 <h:panelGrid columns="1" cellpadding="15" rendered="#{espacioBean.tipoEspacio == '1' or espacioBean.tipoEspacio == '2'or
                                             espacioBean.tipoEspacio == '3' or espacioBean.tipoEspacio == '4'or espacioBean.tipoEspacio == '5'}">
                                     
-                                    <p:commandButton update="ESPACIOS"   value="Resgistrar" actionListener="#{espacioBean.registrarEspacio}"/>
+                                    <p:commandButton update=":ESPACIOS"   value="Resgistrar" actionListener="#{espacioBean.registrarEspacio}"/>
                                      
                                 </h:panelGrid>
                             
@@ -100,20 +100,24 @@
                         </p:scrollPanel>
                         </p:panel>
                     
-
+                    </h:form  >
                     </p:layoutUnit>
 
 <!--            --> <p:layoutUnit position="center"  style="margin-right:20px ">
                         <p:panel style="margin: 20px; background-color:#ece9d8;" >
                             <br></br>
+                            <h:form id="form2">
                             <f:facet name="header">
                                 Espacios Registrados
                             </f:facet>  
-                            <p:commandButton process="tablaEspacios" update="espacioDetalle" icon="ui-icon-search" value="View" oncomplete="PF('espacioDialogo').show()" />
+                            <p:commandButton process="tablaEspacios" update=":espacioDetalle" icon="ui-icon-search" value="Ver" oncomplete="PF('espacioDialogo').show()" />
                             <p:dataTable var="espacio" value="#{espacioBean.espacios}" 
                                          selectionMode="single" selection="#{espacioBean.espacioSeleccionado}"
-                                         rowKey="#{espacio.nombreEspacio}" id="tablaEspacios"  >
+                                         rowKey="#{espacio.idEspacio}" id="tablaEspacios" >
 
+                                <p:column headerText="Id">
+                                    <h:outputText value="#{espacio.idEspacio}" />
+                                </p:column>
                                 
                                 <p:column headerText="Nombre">
                                     <h:outputText value="#{espacio.nombreEspacio}" />
@@ -126,11 +130,12 @@
                                 
                                 
                             </p:dataTable> 
-
+                            </h:form>
                             </p:panel>
+                        
                         <p:dialog  style="height:450px;margin:10px;border: 10px" header="Informacion del espacio" widgetVar="espacioDialogo" showEffect="explode" hideEffect="bounce" resizable="false">
                             <p:outputPanel id="espacioDetalle" >
-                                <p:panelGrid  columns="2" rendered="#{not empty espacioBean.espacioSeleccionado}" columnClasses="label,value">
+                                <p:panelGrid  columns="2" columnClasses="label,value">
                                     
                                     <h:outputText value="Tipo" />
                                     <h:outputText value="#{espacioBean.espacioSeleccionado.tipo.nombre}" />
@@ -147,7 +152,7 @@
                                 </p:panelGrid>
                                 <p:tabView>
                                     
- <!-- Materias-->                       <p:tab title="Materias" rendered="#{espacioBean.espacioSeleccionado.tipo.idTipo == 1 or espacioBean.tipoEspacio == 3 }">
+<!-- Materias-->                       <p:tab title="Materias" rendered="#{espacioBean.espacioSeleccionado.tipo.nombre.equals('Aula') or espacioBean.espacioSeleccionado.tipo.nombre.equals('Laboratorio')}" >
                                             <h:panelGrid columns="3" cellpadding="15" >
                                                 <p:outputLabel for="materiaAgregar" value="Seleccione una materia" />
                                                 <p:selectOneMenu requiredMessage="Seleccione una materia" id="materiaAgregar" 
@@ -274,8 +279,7 @@
                             </p:outputPanel>
                         </p:dialog>
                     </p:layoutUnit>
-                </p:layout>
-                </h:form>    
+                </p:layout>    
                 
                 
             </ui:define>

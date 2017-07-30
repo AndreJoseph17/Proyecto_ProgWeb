@@ -18,5 +18,6 @@ public interface TipoDao {
     public void newTipo(Tipo tipo);        
     public void updateTipo(Tipo tipo);
     public void deleteTipo(Tipo tipo);
+    public Tipo buscarTipo(int codigo);
     
 }

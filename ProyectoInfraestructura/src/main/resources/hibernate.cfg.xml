@@ -10,6 +10,7 @@
     <property name="hibernate.show_sql">true</property>
     <property name="hibernate.format_sql">true</property>
     <property name="hibernate.current_session_context_class">thread</property>
+    
     <mapping resource="com/proyecto/modelo/Estudiante.hbm.xml"/>
     <mapping resource="com/proyecto/modelo/Matricula.hbm.xml"/>
     <mapping resource="com/proyecto/modelo/MatriculaHasMateria.hbm.xml"/>

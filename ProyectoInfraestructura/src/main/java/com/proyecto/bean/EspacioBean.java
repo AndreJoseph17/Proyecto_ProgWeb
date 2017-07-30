@@ -1,13 +1,17 @@
 package com.proyecto.bean;
 
 
+import com.proyecto.dao.*;
+import com.proyecto.imp.*;
 import com.proyecto.modelo.*;
 import com.proyecto.util.HibernateUtil;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import org.hibernate.Hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -16,6 +20,7 @@ import org.primefaces.event.UnselectEvent;
 
 
 @ManagedBean
+@ViewScoped
 public class EspacioBean {
     private int disponibilidad;
     private int funcionalidad;
@@ -42,9 +47,23 @@ public class EspacioBean {
     private List<Espacio> espacios;
     private Espacio espacioSeleccionado;
     
+    private Espacio espacioEscogido;
+    
+    
     private List<EspacioHasMateria> materias;
     private List<EquipoInformatico> equipos;
 
+    public Espacio getEspacioEscogido() {
+        EspacioDao dao = new EspacioDaoImp();
+        espacioEscogido = dao.buscarEspacio(espacioSeleccionado.getIdEspacio());
+        return espacioEscogido;
+    }
+
+    public void setEspacioEscogido(Espacio espacioEscogido) {
+        this.espacioEscogido = espacioEscogido;
+    }
+
+    
     public int getDisponibilidad() {
         return disponibilidad;
     }
@@ -162,6 +181,7 @@ public class EspacioBean {
     }
 
     public Espacio getEspacioSeleccionado() {
+        
         return espacioSeleccionado;
     }
 
@@ -246,8 +266,26 @@ public class EspacioBean {
     
     
     public void registrarEspacio(ActionEvent event) {
-           
-       
+        EspacioDao dao = new EspacioDaoImp();
+        TipoDao daoTipo = new TipoDaoImp();
+
+        Tipo tipo = daoTipo.buscarTipo(Integer.parseInt(tipoEspacio));
+        tipo.setNombre(nombre);
+
+         Espacio m = new Espacio();
+         m.setIluminacion(iluminacion);
+         m.setInternet(internet);
+         m.setTipo(tipo);
+         m.setNombreEspacio(nombre);
+            
+       if(tipoEspacio.equals("1") || tipoEspacio.equals("3")){
+            m.setCapacidad(Integer.parseInt(capacidad));
+       }
+       else if(tipoEspacio.equals("2") || tipoEspacio.equals("4")){
+            m.setNrescritorios(Integer.parseInt(numEscritorios));
+            tipo.setNombre(otroEspacio);
+       }
+       dao.agregarEspacio(m);
         
     }   
 
@@ -255,9 +293,14 @@ public class EspacioBean {
         List<Espacio> listaEspacios=null;
         Session session=HibernateUtil.getSessionFactory().openSession();
         Transaction t=session.beginTransaction();
-        String hql="from espacio";
+        String hql="From Espacio";
         try{
             listaEspacios=session.createQuery(hql).list();
+            for (Espacio mhh : listaEspacios) {
+                Hibernate.initialize(mhh.getTipo());
+                Hibernate.initialize(mhh.getIdEspacio());
+                Hibernate.initialize(mhh.getNombreEspacio());
+            }
             t.commit();
             session.close();
         }
