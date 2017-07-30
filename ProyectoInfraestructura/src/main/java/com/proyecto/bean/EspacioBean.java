@@ -5,7 +5,9 @@ import com.proyecto.dao.*;
 import com.proyecto.imp.*;
 import com.proyecto.modelo.*;
 import com.proyecto.util.HibernateUtil;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -52,6 +54,18 @@ public class EspacioBean {
     
     private List<EspacioHasMateria> materias;
     private List<EquipoInformatico> equipos;
+    
+    private List<Materia> materiasDisponibles;
+    
+    public Map<String, String> getMateriasDisponibles() {
+         return extraerMaterias();
+    }
+
+    public void setMateriasDisponibles(List<Materia> materiasDisponibles) {
+        this.materiasDisponibles = materiasDisponibles;
+    }
+    
+    
 
     public Espacio getEspacioEscogido() {
         EspacioDao dao = new EspacioDaoImp();
@@ -312,10 +326,49 @@ public class EspacioBean {
     
   
     public void registrarMateria(ActionEvent event){
+        MateriaDao daoMateria = new MateriaDaoImp();
+        EspacioDao daoEspacio = new EspacioDaoImp();
+        int id = Integer.parseInt(idMateriaAgregar);
+       
+
+       
+        Materia materia = daoMateria.buscarMateria(id);
+       
+        //materiaSeleccionada = mDao.buscarMateria(1);
+        EspacioHasMateriaId espacioHasMateriaId = new EspacioHasMateriaId(espacioSeleccionado.getIdEspacio(), materia.getIdMateria());
+
+        EspacioHasMateria m = new EspacioHasMateria(espacioHasMateriaId, espacioSeleccionado, materia);
+
+        daoEspacio.agregarEspacioHasMateria(m);
         
     }
     public void registrarEquipo(ActionEvent event){
         
+    }
+
+    private Map<String, String> extraerMaterias() {
+        Map<String,String> map = new HashMap<>();
+        
+        List<Materia> listaMaterias=null;
+        
+        Session session=HibernateUtil.getSessionFactory().openSession();
+        Transaction t=session.beginTransaction();
+        String hql="FROM Materia";
+        try{
+            listaMaterias=session.createQuery(hql).list();
+            t.commit();
+            session.close();
+        }
+        catch(Exception e){
+        t.rollback();
+        }
+        List<Dia> l = null;
+        
+        for (int i = 0 ; i<listaMaterias.size();i++){
+           
+            map.put(listaMaterias.get(i).getNombre(), listaMaterias.get(i).getIdMateria().toString());
+        }
+        return map;
     }
     
 }

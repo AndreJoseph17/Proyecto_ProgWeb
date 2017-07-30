@@ -8,6 +8,7 @@ package com.proyecto.imp;
 import com.proyecto.dao.EspacioDao;
 import com.proyecto.modelo.Dia;
 import com.proyecto.modelo.Espacio;
+import com.proyecto.modelo.EspacioHasMateria;
 import com.proyecto.modelo.MateriaHasDocente;
 import com.proyecto.modelo.MateriaHasHorario;
 import com.proyecto.modelo.Tipo;
@@ -144,6 +145,26 @@ public class EspacioDaoImp implements EspacioDao{
         return espacio;
         
       
+    }
+
+    @Override
+    public void agregarEspacioHasMateria(EspacioHasMateria espacioHasMateria) {
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            session.save(espacioHasMateria);
+            session.getTransaction().commit();
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            session.getTransaction().rollback();
+        } finally {
+            if (session != null) {
+
+                session.close();
+            }
+        }
     }
 
     

@@ -153,20 +153,17 @@
                                 <p:tabView>
                                     
 <!-- Materias-->                       <p:tab title="Materias" rendered="#{espacioBean.espacioSeleccionado.tipo.nombre.equals('Aula') or espacioBean.espacioSeleccionado.tipo.nombre.equals('Laboratorio')}" >
+                                        <h:form id="form3">
+
                                             <h:panelGrid columns="3" cellpadding="15" >
                                                 <p:outputLabel for="materiaAgregar" value="Seleccione una materia" />
                                                 <p:selectOneMenu requiredMessage="Seleccione una materia" id="materiaAgregar" 
                                                        value="#{espacioBean.idMateriaAgregar}" style="width:225px" >
 
                                                      <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>                
-                                                     <f:selectItem itemLabel="Mate" itemValue="1" />
-                                                     <f:selectItem itemLabel="Lenguajes" itemValue="2"  />
-                                                     <f:selectItem itemLabel="Programacion" itemValue="3"  />
-                                                     <f:selectItem itemLabel="Analisis" itemValue="4"  />
-                                                     <f:selectItem itemLabel="Otros" itemValue="5"  />
-                                                     <f:ajax render="@form" />
+                                                     <f:selectItems value="#{espacioBean.materiasDisponibles}" />
                                                  </p:selectOneMenu>
-                                                <p:commandButton value="Agregar"  actionListener="#{espacioBean.registrarMateria}" />
+                                                <p:commandButton process="form3" update="form3"  value="Agregar"  actionListener="#{espacioBean.registrarMateria}" />
                                             </h:panelGrid>
                                             
                                             <!-- TABLA MATERIAS AGREGADAS EN EL AULA O LABORATORIO-->
@@ -190,7 +187,7 @@
 
                                                 </p:dataTable> 
                                             </p:panel>
-                                                
+                                        </h:form>        
                                         </p:tab>
  
  <!-- Equipos informaticos-->           <p:tab title="Equipos Informaticos">

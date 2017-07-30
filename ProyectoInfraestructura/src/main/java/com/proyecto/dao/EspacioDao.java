@@ -19,4 +19,5 @@ public interface EspacioDao {
     public void eliminarEspacio(Espacio espacio);
     public void actualizarEspacio(Espacio espacio);
     public Espacio buscarEspacio(int codigo);
+    public void agregarEspacioHasMateria(EspacioHasMateria espacioHasMateria);
 }
