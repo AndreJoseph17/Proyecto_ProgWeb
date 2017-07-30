@@ -20,4 +20,6 @@ public interface EspacioDao {
     public void actualizarEspacio(Espacio espacio);
     public Espacio buscarEspacio(int codigo);
     public void agregarEspacioHasMateria(EspacioHasMateria espacioHasMateria);
+    
+    public List<EspacioHasMateria> buscarEspacioHasMateria();
 }

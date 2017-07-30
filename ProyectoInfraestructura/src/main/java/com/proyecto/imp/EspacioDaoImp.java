@@ -167,6 +167,31 @@ public class EspacioDaoImp implements EspacioDao{
         }
     }
 
+    @Override
+    public List<EspacioHasMateria> buscarEspacioHasMateria() {
+        List<EspacioHasMateria> listaMaterias = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction t = session.beginTransaction();
+        String hql = "FROM EspacioHasMateria";
+        
+        try {
+            listaMaterias = session.createQuery(hql).list();
+            for (EspacioHasMateria mhh : listaMaterias) {
+                Hibernate.initialize(mhh.getMateria());
+                Hibernate.initialize(mhh.getEspacio());
+            }
+            
+            t.commit();
+
+        } catch (Exception e) {
+            t.rollback();
+        }
+
+        
+        session.close();
+        return listaMaterias;
+    }
+
     
     
 }

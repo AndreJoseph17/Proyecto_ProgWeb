@@ -8,6 +8,7 @@ package com.proyecto.imp;
 import com.proyecto.dao.EstudianteDao;
 import com.proyecto.modelo.Estudiante;
 import com.proyecto.util.HibernateUtil;
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
@@ -82,6 +83,26 @@ public class EstudianteDaoImp implements EstudianteDao{
         }
         session.close();
         
+    }
+
+    @Override
+    public Estudiante buscarEstudiante(int codigo) {
+        Estudiante estudiante = new Estudiante();
+        List<Estudiante> listaEstudiantes = new ArrayList<Estudiante>();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction t = session.beginTransaction();
+        String hql = "FROM Estudiante where idEstudiante=" + codigo;
+        // Query query=session.createQuery(hql);
+        //query.setInteger("codigo",codigo);
+        try {
+            listaEstudiantes = session.createQuery(hql).list();
+            estudiante = listaEstudiantes.get(0);
+            t.commit();
+            session.close();
+        } catch (Exception e) {
+            t.rollback();
+        }
+        return estudiante;
     }
     
     

@@ -5,7 +5,7 @@
  */
 package com.proyecto.dao;
 
-import com.proyecto.modelo.Matricula;
+import com.proyecto.modelo.*;
 import java.util.List;
 
 /**
@@ -15,7 +15,10 @@ import java.util.List;
 public interface MatriculaDao {
     
     public List<Matricula> listarMatriculas();
+    public List<MatriculaHasMateria> listarMateriasMatriculadas();
     public void agregarMatricula(Matricula matricula);
     public void actualizarMatricula(Matricula matricula);
     public void eliminarMatricula(Matricula matricula);
+    
+    public void agregarMatriculaHasMateria(MatriculaHasMateria matriculaHasMateria);
 }

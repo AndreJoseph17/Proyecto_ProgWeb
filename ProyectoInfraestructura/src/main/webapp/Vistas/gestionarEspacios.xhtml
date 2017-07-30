@@ -48,7 +48,7 @@
                                     <f:selectItem itemLabel="No" itemValue="No" />
                                 </p:selectOneRadio>
                                 
-                                <h:outputLabel for="ilumicacion" value="Dispone de Iluminacion:" />
+                                <h:outputLabel for="iluminacion" value="Dispone de Iluminacion:" />
                                 <p:selectOneRadio id="iluminacion" value="#{espacioBean.iluminacion}">
                                     <f:selectItem itemLabel="Si" itemValue="Si" />
                                     <f:selectItem itemLabel="No" itemValue="No" />
@@ -114,7 +114,8 @@
                             <p:dataTable var="espacio" value="#{espacioBean.espacios}" 
                                          selectionMode="single" selection="#{espacioBean.espacioSeleccionado}"
                                          rowKey="#{espacio.idEspacio}" id="tablaEspacios" >
-
+                                <p:ajax event="rowSelect" listener="#{espacioBean.guardarIdSelect}" />
+        
                                 <p:column headerText="Id">
                                     <h:outputText value="#{espacio.idEspacio}" />
                                 </p:column>
@@ -153,7 +154,7 @@
                                 <p:tabView>
                                     
 <!-- Materias-->                       <p:tab title="Materias" rendered="#{espacioBean.espacioSeleccionado.tipo.nombre.equals('Aula') or espacioBean.espacioSeleccionado.tipo.nombre.equals('Laboratorio')}" >
-                                        <h:form id="form3">
+                                        <h:form id="formMaterias">
 
                                             <h:panelGrid columns="3" cellpadding="15" >
                                                 <p:outputLabel for="materiaAgregar" value="Seleccione una materia" />
@@ -163,14 +164,14 @@
                                                      <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>                
                                                      <f:selectItems value="#{espacioBean.materiasDisponibles}" />
                                                  </p:selectOneMenu>
-                                                <p:commandButton process="form3" update="form3"  value="Agregar"  actionListener="#{espacioBean.registrarMateria}" />
+                                                <p:commandButton process="formMaterias" update="formMaterias"  value="Agregar"  actionListener="#{espacioBean.registrarMateria}" />
                                             </h:panelGrid>
                                             
                                             <!-- TABLA MATERIAS AGREGADAS EN EL AULA O LABORATORIO-->
                                             <p:panel style="width: 700px;margin: 20px; background-color:#ece9d8;" >
                                                 <p:commandButton process="tablaMateriasAgregadas" update="tablaMateriasAgregadas" value="-" />
                                                 <p:dataTable var="materia" value="#{espacioBean.materias}" 
-                                                         selectionMode="single" id="tablaMateriasAgregadas">
+                                                         id="tablaMateriasAgregadas">
                                                 
                                                      <p:column headerText="Id">
                                                          <h:outputText value="#{materia.materia.idMateria}" />
@@ -191,7 +192,7 @@
                                         </p:tab>
  
  <!-- Equipos informaticos-->           <p:tab title="Equipos Informaticos">
-     
+                                        <h:form id="formEquipos"> 
                                             <h:panelGrid columns="2" cellpadding="8" >
                                                 <h:outputLabel for="nombreEquipo"  value="Nombre del Equipo:"   />
                                                 <p:inputText  id="nombreEquipo" value="#{espacioBean.nombreEquipo}"  required="true"  />
@@ -199,16 +200,14 @@
                                                 <h:outputLabel for="descripcionEquipo"  value="Descripcion del Equipo:"   />
                                                 <p:inputText  id="descripcionEquipo" value="#{espacioBean.descripcionEquipo}"  required="true"  />
                                     
-                                                <p:commandButton value="Agregar"  actionListener="#{espacioBean.registrarEquipo}" />
+                                                <p:commandButton value="Agregar" process="formEquipos" update="formEquipos"  actionListener="#{espacioBean.registrarEquipo}" />
                                             </h:panelGrid>
                                             
                                             <!-- TABLA EQUIPOS AGREGADAS EN EL ESPACIO-->
                                             <p:panel style="width: 700px;margin: 20px; background-color:#ece9d8;" >
                                                 <p:commandButton process="tablaEquiposAgregados" update="tablaEquiposAgregados" value="-" />
                                                 
-                                                <p:dataTable var="equipo" value="#{espacioBean.equipos}" 
-                                                         selectionMode="single" id="tablaEquiposAgregados">
-                                                
+                                                <p:dataTable var="equipo" value="#{espacioBean.equipos}" id="tablaEquiposAgregados">
                                                      <p:column headerText="Id">
                                                          <h:outputText value="#{equipo.idEquipoInformatico}" />
                                                     </p:column>
@@ -221,10 +220,9 @@
                                                         <h:outputText value="#{equipo.descripcion}" />
                                                     </p:column>
 
-
                                                 </p:dataTable> 
                                             </p:panel>
-                                           
+                                        </h:form>   
                                         </p:tab>
  <!-- Normativa-->
 
@@ -253,7 +251,7 @@
                                                         <h:outputLabel for="disponibilidad" value="Disponibilidad:" />
                                                         <p:spinner id="disponibilidad" value="#{espacioBean.disponibilidad}" min="0" max="10" />
                                                         
-                                                        <p:commandButton  update="tablaEquiposAgregados" value="Verificar Normativa" />
+                                                        <p:commandButton  value="Verificar Normativa" />
                                                 
                                                     </h:panelGrid>
                                                     </p:panel>

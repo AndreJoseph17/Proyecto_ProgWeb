@@ -53,7 +53,8 @@
                                 <p:dataTable var="materia" value="#{materiaBean.materias}"  id="tablaMaterias"  
                                              selectionMode="single" selection="#{materiaBean.materiaSeleccionada}"
                                              rowKey="#{materia.idMateria}">
-
+                                    <p:ajax event="rowSelect" listener="#{materiaBean.guardarIdSelect}"  />
+        
                                     <p:column headerText="Codigo">
                                         <h:outputText value="#{materia.idMateria}" />
                                     </p:column>

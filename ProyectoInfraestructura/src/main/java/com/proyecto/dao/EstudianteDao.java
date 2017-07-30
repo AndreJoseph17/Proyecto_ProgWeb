@@ -18,4 +18,5 @@ public interface EstudianteDao {
     public void agregarUsuario(Estudiante estudiante);
     public void actualizarUsuario(Estudiante estudiante);
     public void eliminarEstudiante(Estudiante estudiante);
+    public Estudiante buscarEstudiante (int codigo);
 }

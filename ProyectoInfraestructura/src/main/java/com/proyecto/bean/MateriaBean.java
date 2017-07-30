@@ -4,6 +4,7 @@ import com.proyecto.dao.MateriaDao;
 import com.proyecto.imp.MateriaDaoImp;
 import com.proyecto.modelo.*;
 import com.proyecto.util.HibernateUtil;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,8 +28,12 @@ import org.primefaces.event.UnselectEvent;
 
 @ManagedBean
 @ViewScoped
-public class MateriaBean  {
+public class MateriaBean  implements Serializable{
     
+    private int ID_MATERIA_SELECCIONADA=-1;
+    public void guardarIdSelect(){
+        ID_MATERIA_SELECCIONADA = materiaSeleccionada.getIdMateria();
+    }
     private String nombre;
     private String descripcion;
     private int idMateriaSeleccionadada;
@@ -122,7 +127,7 @@ public class MateriaBean  {
         List<MateriaHasDocente> lista = dao.buscarDocenteHasMateria();
         List<MateriaHasDocente> aux = new ArrayList<>();
         for (int i = 0; i < lista.size(); i++) {
-            if (lista.get(i).getMateria().getIdMateria()== materiaSeleccionada.getIdMateria()) {
+            if (lista.get(i).getMateria().getIdMateria()== ID_MATERIA_SELECCIONADA) {
                 aux.add(lista.get(i));
             }
         }
@@ -136,7 +141,7 @@ public class MateriaBean  {
         List<MateriaHasHorario> lista = dao.buscarHorarioHasMateria();
         List<MateriaHasHorario> aux = new ArrayList<>();
         for (int i = 0; i < lista.size(); i++) {
-            if (lista.get(i).getMateria().getIdMateria() == materiaSeleccionada.getIdMateria()) {
+            if (lista.get(i).getMateria().getIdMateria() == ID_MATERIA_SELECCIONADA) {
                 aux.add(lista.get(i));
             }
         }
@@ -205,16 +210,7 @@ public class MateriaBean  {
     public void setHorarioSeleccionado(MateriaHasHorario horarioSeleccionado) {
         this.horarioSeleccionado = horarioSeleccionado;
     }
-    
-    public void onRowSelect(SelectEvent event) {
-        FacesMessage msg = new FacesMessage("Materia Seleccionada", ((Materia) event.getObject()).getNombre());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
- 
-    public void onRowUnselect(UnselectEvent event) {
-        FacesMessage msg = new FacesMessage("Materia no seleccionada", ((Materia) event.getObject()).getNombre());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
+  
     
     
     
@@ -277,15 +273,7 @@ public class MateriaBean  {
         mDao.agregarMateriaHasDocente(m);
     }
     
-    public void otroMetodo(ActionEvent event){
-        try {
-            System.out.println("alskfjalskdfjadslfkjdsalf");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-    
-    }
+  
     
    public List<Materia> listarMaterias(){
         List<Materia> listaMaterias=null;

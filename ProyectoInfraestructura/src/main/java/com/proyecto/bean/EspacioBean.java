@@ -1,10 +1,11 @@
 package com.proyecto.bean;
 
-
 import com.proyecto.dao.*;
 import com.proyecto.imp.*;
 import com.proyecto.modelo.*;
 import com.proyecto.util.HibernateUtil;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,20 +21,28 @@ import org.hibernate.Transaction;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
-
 @ManagedBean
 @ViewScoped
-public class EspacioBean {
+public class EspacioBean implements Serializable {
+
+    private int ID_MATERIA_SELECCIONADA=-1;
+    
+    
+    public void guardarIdSelect(){
+        ID_MATERIA_SELECCIONADA= espacioSeleccionado.getIdEspacio();
+    }
+    
+    
     private int disponibilidad;
     private int funcionalidad;
     private int equipamiento;
-    
+
     private String idFormula;
     private String nombreEquipo;
     private String descripcionEquipo;
-    
+
     private String idMateriaAgregar;
-    
+
     private String otroEspacio;
     private String tipoEspacio;
     private String idEspacio;
@@ -45,39 +54,23 @@ public class EspacioBean {
     private String iluminacion;
     private String internet;
     private String capacidad;
-    
+
     private List<Espacio> espacios;
     private Espacio espacioSeleccionado;
-    
-    private Espacio espacioEscogido;
-    
-    
+
     private List<EspacioHasMateria> materias;
     private List<EquipoInformatico> equipos;
-    
+
     private List<Materia> materiasDisponibles;
-    
+
     public Map<String, String> getMateriasDisponibles() {
-         return extraerMaterias();
+        return extraerMaterias();
     }
 
     public void setMateriasDisponibles(List<Materia> materiasDisponibles) {
         this.materiasDisponibles = materiasDisponibles;
     }
-    
-    
 
-    public Espacio getEspacioEscogido() {
-        EspacioDao dao = new EspacioDaoImp();
-        espacioEscogido = dao.buscarEspacio(espacioSeleccionado.getIdEspacio());
-        return espacioEscogido;
-    }
-
-    public void setEspacioEscogido(Espacio espacioEscogido) {
-        this.espacioEscogido = espacioEscogido;
-    }
-
-    
     public int getDisponibilidad() {
         return disponibilidad;
     }
@@ -101,8 +94,6 @@ public class EspacioBean {
     public void setFuncionalidad(int funcionalidad) {
         this.funcionalidad = funcionalidad;
     }
-    
-    
 
     public String getIdFormula() {
         return idFormula;
@@ -111,8 +102,6 @@ public class EspacioBean {
     public void setIdFormula(String idFormula) {
         this.idFormula = idFormula;
     }
-    
-    
 
     public String getDescripcionEquipo() {
         return descripcionEquipo;
@@ -131,24 +120,43 @@ public class EspacioBean {
     }
 
     public List<EquipoInformatico> getEquipos() {
-        return equipos;
+        EquipoInformaticoDao dao = new EquipoInformaticoDaoImp();
+        List<EquipoInformatico> lista =dao.listarEquiposInformaticos();
+        
+        List<EquipoInformatico> aux = new ArrayList<>();
+        for (int i = 0; i < lista.size(); i++) {
+            if (lista.get(i).getEspacio().getIdEspacio() == ID_MATERIA_SELECCIONADA) {
+
+                
+                aux.add(lista.get(i));
+            }
+        }
+
+        return aux;
     }
 
     public void setEquipos(List<EquipoInformatico> equipos) {
         this.equipos = equipos;
     }
-    
-    
-    
+
     public List<EspacioHasMateria> getMaterias() {
-        return materias;
+        EspacioDao dao = new EspacioDaoImp();
+
+        List<EspacioHasMateria> lista = dao.buscarEspacioHasMateria();
+        List<EspacioHasMateria> aux = new ArrayList<>();
+        for (int i = 0; i < lista.size(); i++) {
+            if (lista.get(i).getEspacio().getIdEspacio() == espacioSeleccionado.getIdEspacio()) {
+
+                System.out.println("entro");
+                aux.add(lista.get(i));
+            }
+        }
+        return aux;
     }
 
     public void setMaterias(List<EspacioHasMateria> materias) {
         this.materias = materias;
     }
-    
-    
 
     public String getIdMateriaAgregar() {
         return idMateriaAgregar;
@@ -158,7 +166,6 @@ public class EspacioBean {
         this.idMateriaAgregar = idMateriaAgregar;
     }
 
-    
     public String getOtroEspacio() {
         return otroEspacio;
     }
@@ -167,7 +174,6 @@ public class EspacioBean {
         this.otroEspacio = otroEspacio;
     }
 
-    
     public String getInternet() {
         return internet;
     }
@@ -184,8 +190,6 @@ public class EspacioBean {
         this.tipoEspacio = tipoEspacio;
     }
 
-    
-
     public String getArea() {
         return area;
     }
@@ -195,7 +199,7 @@ public class EspacioBean {
     }
 
     public Espacio getEspacioSeleccionado() {
-        
+
         return espacioSeleccionado;
     }
 
@@ -227,9 +231,11 @@ public class EspacioBean {
     public void setIluminacion(String iluminacion) {
         this.iluminacion = iluminacion;
     }
+
     public String getIluminacion() {
         return iluminacion;
     }
+
     public String getCapacidad() {
         return capacidad;
     }
@@ -265,20 +271,17 @@ public class EspacioBean {
     public void setUbicacion(String ubicacion) {
         this.ubicacion = ubicacion;
     }
-    
 
- 
     public void onRowSelect(SelectEvent event) {
         FacesMessage msg = new FacesMessage("Espacio Seleccionado", ((Espacio) event.getObject()).getNombreEspacio());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
- 
+
     public void onRowUnselect(UnselectEvent event) {
         FacesMessage msg = new FacesMessage("Espacio no seleccionado", ((Espacio) event.getObject()).getNombreEspacio());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-    
-    
+
     public void registrarEspacio(ActionEvent event) {
         EspacioDao dao = new EspacioDaoImp();
         TipoDao daoTipo = new TipoDaoImp();
@@ -286,30 +289,29 @@ public class EspacioBean {
         Tipo tipo = daoTipo.buscarTipo(Integer.parseInt(tipoEspacio));
         tipo.setNombre(nombre);
 
-         Espacio m = new Espacio();
-         m.setIluminacion(iluminacion);
-         m.setInternet(internet);
-         m.setTipo(tipo);
-         m.setNombreEspacio(nombre);
-            
-       if(tipoEspacio.equals("1") || tipoEspacio.equals("3")){
+        Espacio m = new Espacio();
+        m.setIluminacion(iluminacion);
+        m.setInternet(internet);
+        m.setTipo(tipo);
+        m.setNombreEspacio(nombre);
+
+        if (tipoEspacio.equals("1") || tipoEspacio.equals("3")) {
             m.setCapacidad(Integer.parseInt(capacidad));
-       }
-       else if(tipoEspacio.equals("2") || tipoEspacio.equals("4")){
+        } else if (tipoEspacio.equals("2") || tipoEspacio.equals("4")) {
             m.setNrescritorios(Integer.parseInt(numEscritorios));
             tipo.setNombre(otroEspacio);
-       }
-       dao.agregarEspacio(m);
-        
-    }   
+        }
+        dao.agregarEspacio(m);
+
+    }
 
     private List<Espacio> listarEspacios() {
-        List<Espacio> listaEspacios=null;
-        Session session=HibernateUtil.getSessionFactory().openSession();
-        Transaction t=session.beginTransaction();
-        String hql="From Espacio";
-        try{
-            listaEspacios=session.createQuery(hql).list();
+        List<Espacio> listaEspacios = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction t = session.beginTransaction();
+        String hql = "From Espacio";
+        try {
+            listaEspacios = session.createQuery(hql).list();
             for (Espacio mhh : listaEspacios) {
                 Hibernate.initialize(mhh.getTipo());
                 Hibernate.initialize(mhh.getIdEspacio());
@@ -317,58 +319,57 @@ public class EspacioBean {
             }
             t.commit();
             session.close();
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             t.rollback();
         }
         return listaEspacios;
     }
-    
-  
-    public void registrarMateria(ActionEvent event){
+
+    public void registrarMateria(ActionEvent event) {
         MateriaDao daoMateria = new MateriaDaoImp();
         EspacioDao daoEspacio = new EspacioDaoImp();
         int id = Integer.parseInt(idMateriaAgregar);
-       
 
-       
         Materia materia = daoMateria.buscarMateria(id);
-       
+
         //materiaSeleccionada = mDao.buscarMateria(1);
         EspacioHasMateriaId espacioHasMateriaId = new EspacioHasMateriaId(espacioSeleccionado.getIdEspacio(), materia.getIdMateria());
 
         EspacioHasMateria m = new EspacioHasMateria(espacioHasMateriaId, espacioSeleccionado, materia);
 
         daoEspacio.agregarEspacioHasMateria(m);
-        
+
     }
-    public void registrarEquipo(ActionEvent event){
-        
+
+    public void registrarEquipo(ActionEvent event) {
+
+        EquipoInformaticoDao dao = new EquipoInformaticoDaoImp();
+
+        EquipoInformatico equipo = new EquipoInformatico(espacioSeleccionado, nombreEquipo, descripcionEquipo);
+
+        dao.agregarEquipo(equipo);
     }
 
     private Map<String, String> extraerMaterias() {
-        Map<String,String> map = new HashMap<>();
-        
-        List<Materia> listaMaterias=null;
-        
-        Session session=HibernateUtil.getSessionFactory().openSession();
-        Transaction t=session.beginTransaction();
-        String hql="FROM Materia";
-        try{
-            listaMaterias=session.createQuery(hql).list();
+        Map<String, String> map = new HashMap<>();
+
+        List<Materia> listaMaterias = null;
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction t = session.beginTransaction();
+        String hql = "FROM Materia";
+        try {
+            listaMaterias = session.createQuery(hql).list();
             t.commit();
             session.close();
+        } catch (Exception e) {
+            t.rollback();
         }
-        catch(Exception e){
-        t.rollback();
-        }
-        List<Dia> l = null;
-        
-        for (int i = 0 ; i<listaMaterias.size();i++){
-           
+        for (int i = 0; i < listaMaterias.size(); i++) {
+
             map.put(listaMaterias.get(i).getNombre(), listaMaterias.get(i).getIdMateria().toString());
         }
         return map;
     }
-    
+
 }

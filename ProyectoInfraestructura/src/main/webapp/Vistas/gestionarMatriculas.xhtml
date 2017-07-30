@@ -17,25 +17,30 @@
         <ui:composition template="./../Plantilla/template.xhtml">
                 
             <ui:define name="cuerpo" >
-                <h:form >
+                <h:form id="form1" >
                     
                     <h:panelGrid columns="3" cellpadding="18" >
-                        <p:outputLabel for="estudiantes" value="Seleccione un estudiante:" />
-                        <p:selectOneMenu  id="estudiantes" value="#{matriculaBean.idEstudiante}" style="width:225px" >
+                        <p:selectOneMenu  id="estudiantes" value="#{matriculaBean.idEstudiante}" style="width:320px" >
 
-                            <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>                
-                            <f:selectItem itemLabel="John Gamel" itemValue="2"  />
-                            <f:selectItem itemLabel="Liss Salinas" itemValue="3"  />
-                            <f:selectItem itemLabel="Jonnathan Peñaranda" itemValue="1" />
-                            <f:selectItem itemLabel="Kimberly Cordoba" itemValue="4"  />
-                            <f:selectItem itemLabel="Emili Arizaga" itemValue="5"  />
+                            <f:selectItem itemLabel="Seleccione un estudiante" itemValue="" noSelectionOption="true"/>                
+                            <f:selectItems value="#{matriculaBean.estudiantesDisponibles}" />
                         </p:selectOneMenu>
-                        <p:commandButton update="PanelMatriculados"   value="Matricular" actionListener="#{matriculaBean.matricularEstrudiante}"/>
                         
+                        <p:selectOneMenu  id="periodo" value="#{matriculaBean.periodo}" style="width:330px" >
+                            <f:selectItem itemLabel="Seleccione un periodo" itemValue="" noSelectionOption="true"/>
+                            <f:selectItem itemLabel="Sep2017 - Feb2018" itemValue="Sep2017 - Feb2018" />                
+                            <f:selectItem itemLabel="Mar2018 - Ago2018" itemValue="Mar2018 - Ago2018" />                
+                            <f:selectItem itemLabel="Ago2018 - Feb2019" itemValue="Ago2018 - Feb2019" />                
+                            
+                        </p:selectOneMenu>
+                        
+                        <p:commandButton update=":PanelMatriculados"   value="Matricular" actionListener="#{matriculaBean.matricularEstrudiante}"/>
+                                                
                     </h:panelGrid>
+                </h:form >
                     <p:layout  id="PanelMatriculados" style="height:380px;margin:22px;border: 20px">
     <!--            --><p:layoutUnit style="margin-top:20px ;" position="west"  id="idLayoutUnitWest" >
-                        
+                        <h:form id="form2" >   
                              <p:panel header="Estudiantes Matriculados" style="margin: 20px; " >
                                 <br></br>
                                  
@@ -44,77 +49,69 @@
                                              selectionMode="single" selection="#{matriculaBean.estudianteSeleccionado}"
                                              rowKey="#{matriculas.idMatricula}" id="tablaMatriculados"  >
 
-
+                                    <p:ajax event="rowSelect" listener="#{matriculaBean.guardarIdSelectMatricula}"   update=":form3" />
+        
                                     <p:column headerText="Nombre">
-                                        <h:outputText value="#{matriculas.estudiante.nombre}" />
+                                        <h:outputText value="#{matriculas.estudiante.nombre} #{matriculas.estudiante.apellido} " />
                                     </p:column>
 
-                                    <p:column headerText=" Apellido">
-                                        <h:outputText value="#{matriculas.estudiante.apellido}" />
-                                    </p:column>
                                     
-                                    <p:column headerText=" Cedula">
-                                        <h:outputText value="#{matriculas.estudiante.cedula}" />
-                                    </p:column>
                                     
-                                    <p:column headerText=" Carrera">
-                                        <h:outputText value="#{matriculas.estudiante.carrera}" />
+                                    
+                                    <p:column headerText=" Periodo">
+                                        <h:outputText value="#{matriculas.periodo}" />
                                     </p:column>
 
 
 
                                 </p:dataTable> 
                             </p:panel>
-                        
+                        </h:form>  
                         </p:layoutUnit>
 
     <!--            --> <p:layoutUnit position="center" id="idLayoutUnitCenter"  style="margin-right:20px ">
+        <h:form id="form3"  >
                             <p:panel header="Materias Asignadas" style="margin: 20px; background-color:#ece9d8;" >
-                                
+                                <p:outputLabel  value="Seleccione un estudiante matriculado para poder agregar materias" 
+                                               rendered="#{matriculaBean.ID_ESTUDIANTE_SELECCIONADO == -1 }"/>
                                  
-                                <h:panelGrid columns="2" cellpadding="20" >
+                                <h:panelGrid columns="2" cellpadding="20" rendered="#{matriculaBean.ID_ESTUDIANTE_SELECCIONADO != -1 }">
                                     <p:selectOneMenu  id="materias" value="#{matriculaBean.idMateriaAgregar}" style="width:275px" >
 
                                         <f:selectItem itemLabel="Seleccione una Materia" itemValue="" noSelectionOption="true"/>                
-                                        <f:selectItem itemLabel="Analisis" itemValue="2"  />
-                                        <f:selectItem itemLabel="Programacion" itemValue="3"  />
+                                        <f:selectItems value="#{matriculaBean.materiasDisponibles}" />
                                     </p:selectOneMenu>
                                     
-                                    <p:commandButton update="PanelMaterias" value="Agregar Materia" actionListener="#{matriculaBean.agregarMateria}"/>
+                                    <p:commandButton update="tablaMaterias" value="Agregar Materia" actionListener="#{matriculaBean.agregarMateria}"/>
 
                                 </h:panelGrid>
                                 
                                 
                                 <!--            -->
-                                <p:panel id="PanelMaterias">
+                                <p:panel id="PanelMaterias" rendered="#{matriculaBean.ID_ESTUDIANTE_SELECCIONADO != -1 }">
                                     <p:commandButton process="tablaMaterias" update="PanelMaterias" value="-"  />
-                                    <p:dataTable style="width:500px;" var="materia" value="#{matriculaBean.materias}" 
-                                                     selectionMode="single" selection="#{matriculaBean.materiaSeleccionada}"
-                                                 rowKey="#{materia.idMateria}" id="tablaMaterias">
+                                    <p:dataTable style="width:500px;" var="materia" value="#{matriculaBean.materias}"
+                                                  id="tablaMaterias">
 
                                         <p:column headerText="Nombre">
                                             <h:outputText value="#{materia.nombre}" />
                                         </p:column>
 
                                         <p:column headerText="Descripcion">
-                                            <h:outputText value="#{materia.Descripcion}" />
-                                        </p:column>
-
-                                        
-
-                                    
+                                            <h:outputText value="#{matera.Descripcion}" />
+                                        </p:column>                                    
 
                                     </p:dataTable>
                                 </p:panel>
                             </p:panel>
                            
-
+                            </h:form >
                         </p:layoutUnit>
                     </p:layout>
                     
                     
                     
-                </h:form>    
+                   
             </ui:define>
 
         </ui:composition>
