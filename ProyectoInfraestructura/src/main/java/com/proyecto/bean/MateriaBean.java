@@ -389,8 +389,6 @@ public class MateriaBean  implements Serializable{
         catch(Exception e){
         t.rollback();
         }
-        List<Dia> l = null;
-        
         for (int i = 0 ; i<listaDocentes.size();i++){
            
             map.put(listaDocentes.get(i).getNombre()+" "+listaDocentes.get(i).getApellido(), listaDocentes.get(i).getIdDocente().toString());
