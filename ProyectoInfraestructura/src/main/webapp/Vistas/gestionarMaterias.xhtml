@@ -42,14 +42,14 @@
                     </p:layoutUnit>
 
 <!-- DERECHA    --> <p:layoutUnit position="center" id="idLayoutUnitCenter"  style="margin-right:20px "  >
-                        <p:panel style="margin: 20px; background-color:#ece9d8;" id="panelMatReg">
+                        <p:panel header="Materias Registradas" style="margin: 20px; background-color:#ece9d8;" id="panelMatReg">
                             <br></br>
                             <h:form id="form2">
                                 <f:facet name="header">
                                     Materias Registradas
                                 </f:facet>  
                                 <p:commandButton process="tablaMaterias" update=":materiaDetalle" icon="ui-icon-search" value="Ver" oncomplete="PF('materiaDialogo').show()" />
-
+                                <p:scrollPanel style="width:625px;height:220px;margin: 10px;">
                                 <p:dataTable var="materia" value="#{materiaBean.materias}"  id="tablaMaterias"  
                                              selectionMode="single" selection="#{materiaBean.materiaSeleccionada}"
                                              rowKey="#{materia.idMateria}">
@@ -71,6 +71,7 @@
 
 
                                 </p:dataTable> 
+                                </p:scrollPanel>
                             </h:form>
                         </p:panel>
 
