@@ -31,6 +31,11 @@ public class EspacioBean implements Serializable {
     public void guardarIdSelect(){
         ID_MATERIA_SELECCIONADA= espacioSeleccionado.getIdEspacio();
     }
+
+    public int getID_MATERIA_SELECCIONADA() {
+        return ID_MATERIA_SELECCIONADA;
+    }
+    
     
     
     private int disponibilidad;

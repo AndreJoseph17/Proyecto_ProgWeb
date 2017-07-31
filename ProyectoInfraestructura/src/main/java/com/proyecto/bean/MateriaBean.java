@@ -31,6 +31,11 @@ import org.primefaces.event.UnselectEvent;
 public class MateriaBean  implements Serializable{
     
     private int ID_MATERIA_SELECCIONADA=-1;
+
+    public int getID_MATERIA_SELECCIONADA() {
+        return ID_MATERIA_SELECCIONADA;
+    }
+    
     public void guardarIdSelect(){
         ID_MATERIA_SELECCIONADA = materiaSeleccionada.getIdMateria();
     }

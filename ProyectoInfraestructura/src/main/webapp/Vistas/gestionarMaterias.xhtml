@@ -48,13 +48,15 @@
                                 <f:facet name="header">
                                     Materias Registradas
                                 </f:facet>  
-                                <p:commandButton  process="tablaMaterias" update=":materiaDetalle" icon="ui-icon-search" value="Ver" oncomplete="PF('materiaDialogo').show()" />
-                                <p:commandButton update=":MATERIAS" value="Eliminar" actionListener="#{materiaBean.eliminarMateria}" />
+                                <p:commandButton rendered="#{materiaBean.ID_MATERIA_SELECCIONADA != -1 }"  
+                                                 process="tablaMaterias" update=":materiaDetalle" icon="ui-icon-search" value="Ver" oncomplete="PF('materiaDialogo').show()" />
+                                <p:commandButton rendered="#{materiaBean.ID_MATERIA_SELECCIONADA != -1 }"
+                                                 update=":MATERIAS" value="Eliminar" actionListener="#{materiaBean.eliminarMateria}" />
                                 <p:scrollPanel style="width:625px;height:220px;margin: 10px;">
                                 <p:dataTable var="materia" value="#{materiaBean.materias}"  id="tablaMaterias"  
                                              selectionMode="single" selection="#{materiaBean.materiaSeleccionada}"
                                              rowKey="#{materia.idMateria}">
-                                    <p:ajax event="rowSelect" listener="#{materiaBean.guardarIdSelect}"  />
+                                    <p:ajax event="rowSelect" listener="#{materiaBean.guardarIdSelect}" update=":form2" />
         
                                     <p:column headerText="Codigo">
                                         <h:outputText value="#{materia.idMateria}" />
@@ -126,7 +128,6 @@
                                         <br></br>
                                         <!-- TABLA_HORARIOS-->
                                             <p:panel style="width: 700px;margin: 20px; background-color:#ece9d8;" >
-                                                <p:commandButton process="tablaHorarios" update="tablaHorarios" value="-" />
                                                 <p:dataTable var="horario" value="#{materiaBean.horarios}" 
                                                              id="tablaHorarios">
 
@@ -168,7 +169,6 @@
                                         <br></br>
                                         <!-- TABLA_DOCENTES-->
                                         <p:panel style="width: 700px;margin: 20px; background-color:#ece9d8;" >
-                                            <p:commandButton process="tablaDocentes" update="tablaDocentes" value="-" />
                                             <p:dataTable var="docente" value="#{materiaBean.docentes}" 
                                                          id="tablaDocentes">
 
