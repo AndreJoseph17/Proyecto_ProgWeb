@@ -44,7 +44,7 @@
                              <p:panel header="Estudiantes Matriculados" style="margin: 20px; " >
                                 <br></br>
                                  
-                                <p:commandButton process="tablaMatriculados" update="tablaMatriculados" value="-"  />
+                                <p:commandButton process="tablaMatriculados" update="tablaMatriculados" value="-" actionListener="#{matriculaBean.eliminarMatricula}" />
                                 <p:scrollPanel style="width:499px;height:198px;">
                                 <p:dataTable style="width:500px;" var="matriculas" value="#{matriculaBean.matriculas}" 
                                              selectionMode="single" selection="#{matriculaBean.estudianteSeleccionado}"
@@ -91,7 +91,8 @@
                                 
                                 <!--            -->
                                 <p:panel id="PanelMaterias" rendered="#{matriculaBean.ID_ESTUDIANTE_SELECCIONADO != -1 }">
-                                    <p:commandButton process="tablaMaterias" update="PanelMaterias" value="-"  />
+                                    <p:commandButton process="tablaMaterias" update="PanelMaterias" value="-" actionListener="#{matriculaBean.eliminarMatricula}" />
+                                    
                                     <p:scrollPanel style="width:500px;height:120px;margin: 5px">
                                     <p:dataTable style="width:500px;" var="materia" value="#{matriculaBean.materias}"
                                                   id="tablaMaterias">

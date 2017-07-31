@@ -112,6 +112,8 @@
                                 Espacios Registrados
                             </f:facet>  
                             <p:commandButton process="tablaEspacios" update=":espacioDetalle" icon="ui-icon-search" value="Ver" oncomplete="PF('espacioDialogo').show()" />
+                            <p:commandButton update=":ESPACIOS"   value="Eliminar" actionListener="#{espacioBean.eliminarEspacio}"/>
+                                    
                             <p:scrollPanel style="width:545px;height:220px;margin: 10px;">
                             <p:dataTable var="espacio" value="#{espacioBean.espacios}" 
                                          selectionMode="single" selection="#{espacioBean.espacioSeleccionado}"

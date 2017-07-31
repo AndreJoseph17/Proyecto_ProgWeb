@@ -395,4 +395,10 @@ public class MateriaBean  implements Serializable{
         }
         return map;
     }
+    public void eliminarMateria(){
+        MateriaDao mDao = new MateriaDaoImp();
+        Materia m = materiaSeleccionada;
+        mDao.eliminarMateria(m);
+        
+    }
 }

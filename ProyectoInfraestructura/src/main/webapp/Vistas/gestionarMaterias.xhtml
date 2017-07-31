@@ -48,7 +48,8 @@
                                 <f:facet name="header">
                                     Materias Registradas
                                 </f:facet>  
-                                <p:commandButton process="tablaMaterias" update=":materiaDetalle" icon="ui-icon-search" value="Ver" oncomplete="PF('materiaDialogo').show()" />
+                                <p:commandButton  process="tablaMaterias" update=":materiaDetalle" icon="ui-icon-search" value="Ver" oncomplete="PF('materiaDialogo').show()" />
+                                <p:commandButton update=":MATERIAS" value="Eliminar" actionListener="#{materiaBean.eliminarMateria}" />
                                 <p:scrollPanel style="width:625px;height:220px;margin: 10px;">
                                 <p:dataTable var="materia" value="#{materiaBean.materias}"  id="tablaMaterias"  
                                              selectionMode="single" selection="#{materiaBean.materiaSeleccionada}"

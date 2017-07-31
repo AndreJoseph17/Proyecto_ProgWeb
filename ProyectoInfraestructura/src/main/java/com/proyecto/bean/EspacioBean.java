@@ -371,5 +371,12 @@ public class EspacioBean implements Serializable {
         }
         return map;
     }
+    
+    public void eliminarEspacio(){
+        EspacioDao mDao = new EspacioDaoImp();
+        Espacio e = espacioSeleccionado;
+        mDao.eliminarEspacio(e);
+        
+    }
 
 }

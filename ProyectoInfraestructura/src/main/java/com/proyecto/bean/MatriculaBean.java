@@ -280,4 +280,8 @@ public class MatriculaBean implements Serializable{
         return aux;
         
     }
+    public void eliminarMatricula(){
+        MatriculaDao mDao = new MatriculaDaoImp();
+        mDao.eliminarMatricula(estudianteSeleccionado);
+    }
 }
