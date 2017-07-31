@@ -46,8 +46,13 @@
                         <p:scrollPanel style="width:795px;height:338px">
                             
                             <h:commandLink>
-                                <h:graphicImage url="pdf_opt.png"/>
+                                <h:graphicImage url="http://icons.iconarchive.com/icons/alecive/flatwoken/32/Apps-Pdf-icon.png"/>
                                 <p:dataExporter type="pdf" target="tablaEstudiantes" fileName="reporte De Estudiantes"/>
+
+                            </h:commandLink>
+                            <h:commandLink>
+                                <h:graphicImage url="http://icons.iconarchive.com/icons/iynque/flat-ios7-style-documents/32/xls-icon.png"/>
+                                <p:dataExporter type="xls" target="tablaEstudiantes" fileName="reporte De Estudiantes"/>
 
                             </h:commandLink>
                             <p:dataTable var="estudiante" value="#{reportesBean.estudiantes}"  id="tablaEstudiantes">
