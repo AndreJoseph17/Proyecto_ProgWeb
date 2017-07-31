@@ -20,9 +20,11 @@
                             <p:dataTable  var="materia" value="#{reportesBean.materias}"
                                                   id="tablaMaterias" selectionMode="single" 
                                                   selection="#{reportesBean.materiaSeleccionada}"
-                                                  rowKey="#{materia.nombre}">
-
-                                <p:column headerText="Nombre">
+                                                  rowKey="#{materia.idMateria}">
+                                
+                                <p:ajax event="rowSelect" listener="#{reportesBean.guardarIdMateriaSeleccionada()}" update=":form2" />
+        
+                                <p:column >
                                     <h:outputText value="#{materia.nombre}" />
                                 </p:column>
 
@@ -42,10 +44,35 @@
 
                         <p:panel header="Lista de Estudiantes"  style="height:382px;margin: 20px;" >
                         <p:scrollPanel style="width:795px;height:338px">
+                            
+                            <h:commandLink>
+                                <h:graphicImage url="pdf_opt.png"/>
+                                <p:dataExporter type="pdf" target="tablaEstudiantes" fileName="reporte De Estudiantes"/>
+
+                            </h:commandLink>
+                            <p:dataTable var="estudiante" value="#{reportesBean.estudiantes}"  id="tablaEstudiantes">
                                 
+                                <p:column headerText="Cédula">
+                                    <h:outputText value="#{estudiante.estudiante.cedula}" />
+                                </p:column>
+
+                                <p:column headerText="Nombre">
+                                    <h:outputText value="#{estudiante.estudiante.nombre} #{estudiante.estudiante.apellido}" />
+                                </p:column>
+
+                                <p:column headerText="Carrera">
+                                    <h:outputText value="#{estudiante.estudiante.carrera}" />
+                                </p:column>
+                                
+                                <p:column headerText="Observación">
+                                    <h:outputText value="#{estudiante.observacion}" />
+                                </p:column>
+                                
+                            </p:dataTable> 
                             
                             
                         </p:scrollPanel>
+                            
                         </p:panel>
                     
                     </h:form  >
